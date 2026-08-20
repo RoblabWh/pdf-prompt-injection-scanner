@@ -2,9 +2,9 @@
 
 ## 1. Uebersicht
 
-Diese Suite prüft PDF-Dokumente auf **versteckte Prompt-Injektionen** - also
-Anweisungen, die für das Auge unsichtbar, aber für LLM-basierte Parser
-(z. B. RAG-Pipelines) lesbar sind.
+Diese Suite prüft PDF-Dokumente **sowie .docx/.txt/.md-Dateien** auf
+**versteckte Prompt-Injektionen** - also Anweisungen, die für das Auge
+unsichtbar, aber für LLM-basierte Parser (z. B. RAG-Pipelines) lesbar sind.
 
 **Erkannte Verstecktechniken:**
 - Weiß-auf-Weiß / sehr heller Text (BT.709-Luminanz)
@@ -15,6 +15,9 @@ Anweisungen, die für das Auge unsichtbar, aber für LLM-basierte Parser
 - Prompts als Rasterbild (OCR-verschleiert)
 - eingebettetes JavaScript, Auto-Execute-Actions, `javascript:`-Links, Exfiltrations-URLs
 - Anhänge (Embedded Files)
+- In `.docx`: verborgene Schrift (`w:vanish`), Schriftgröße 0, helles/weißes Text
+- In `.docx`: Injektionen in Kopf-/Fußzeilen, Kommentare und Core-/App-Metadaten
+- In `.md`: Injektionen im Frontmatter (YAML-Block)
 
 ---
 
@@ -25,11 +28,12 @@ Anweisungen, die für das Auge unsichtbar, aber für LLM-basierte Parser
 | 1 | **Text & Struktur** | `pdf_text_scanner.py` | `pdfscan_core` (gemeinsam) | Textlayer, Metadaten, XMP, JS, Actions, Links, Anhänge, Layout-Anomalien |
 | 2 | **Bilder & OCR** | `pdf_image_scanner.py` | `pdfscan_core` (gemeinsam) | EXIF/XMP, OCR-Text (deu+eng + optional chi_sim) |
 | 3 | **Tiefenscan** | `pdf-injection-scanner/pdf_injection_scanner/scanner.py` | `pdfscan_core` (gemeinsam) | White/Tiny/Off-Page-Text + Signatur-Treffer |
+| 4 | **Textdokumente** | `doc_scanner.py` | `pdfscan_core` (gemeinsam) | `.docx`/`.txt`/`.md`: Text, Metadaten, Frontmatter, `w:vanish`, Schriftgröße 0, heller Text |
 
-**Wichtig:** Alle drei Scanner teilen sich **eine einzige** Signatur-DB in
+**Wichtig:** Alle Scanner teilen sich **eine einzige** Signatur-DB in
 `pdfscan_core.py` (aus `prompt_patterns.py` + `SUPPLEMENTARY_PATTERNS`
 kompiliert). Neue Muster gehören **nur dort** hinein - das wirkt sich
-sofort auf alle drei Scanner aus.
+sofort auf alle Scanner aus.
 
 ---
 
@@ -62,15 +66,19 @@ Ohne `chi_sim` fällt `pdf_image_scanner.py` automatisch auf `deu+eng` zurück.
 
 Optionen:
 ```bash
-./run_pdf_scanner.sh --only text Datei.pdf        # nur Scanner 1
-./run_pdf_scanner.sh --only image Datei.pdf       # nur Scanner 2
-./run_pdf_scanner.sh --only injection Datei.pdf   # nur Scanner 3
+./run_pdf_scanner.sh --only text Datei.pdf         # nur Scanner 1
+./run_pdf_scanner.sh --only image Datei.pdf        # nur Scanner 2
+./run_pdf_scanner.sh --only injection Datei.pdf    # nur Scanner 3
+./run_pdf_scanner.sh --only doc Dokument.docx      # nur Scanner 4 (.docx/.txt/.md)
 
-./run_pdf_scanner.sh --batch <ordner>             # alle *.pdf im Ordner
+./run_pdf_scanner.sh --batch <ordner>              # *.pdf + *.docx + *.txt + *.md
 
-./run_pdf_scanner.sh --format text Datei.pdf      # Text- statt JSON-Report
-./run_pdf_scanner.sh --report-json Datei.pdf      # erzwinge JSON-Report
+./run_pdf_scanner.sh --format text Datei.pdf       # Text- statt JSON-Report
+./run_pdf_scanner.sh --report-json Datei.pdf       # erzwinge JSON-Report
 ```
+
+Die Pipeline wählt die Scanner automatisch nach dem Dateityp: `.pdf` läuft
+Scanner 1+2+3, `.docx`/`.txt`/`.md` läuft Scanner 4.
 
 ### 4.2 Einzelne Scanner manuell
 
@@ -78,6 +86,7 @@ Optionen:
 python3 pdf_text_scanner.py  Datei.pdf          # Scanner 1
 python3 pdf_image_scanner.py Datei.pdf          # Scanner 2
 PYTHONPATH=pdf-injection-scanner python3 -m pdf_injection_scanner.scanner Datei.pdf  # Scanner 3
+python3 doc_scanner.py Dokument.docx            # Scanner 4 (.docx/.txt/.md)
 ```
 
 ### 4.3 JSON-Ausgabe (maschinell lesbar)
@@ -189,11 +198,8 @@ Schwellen. Eine Änderung wirkt sich auf alle drei gleichzeitig aus.
 python3 -m pytest test_scanner_suite.py -v
 ```
 
-7 Tests:
-- weißer Text erkannt
-- Mikroschrift erkannt
-- Metadaten-Injektion erkannt
-- `javascript:`-Link erkannt
-- Shared-DB-Konsistenz zwischen Scanner 1 & 2
-- sauberes Dokument bleibt "sauber"
-- Luminanz-Logik konsistent
+13 Tests:
+- PDF: weißer Text, Mikroschrift, Metadaten-Injektion, `javascript:`-Link,
+  Shared-DB-Konsistenz, sauberes Dokument, Luminanz-Logik
+- DOCX/TXT/MD: TXT-Injektion, MD-Frontmatter, MD-Negativ, DOCX-Text-Injektion,
+  DOCX Weißer Text, DOCX `w:vanish`

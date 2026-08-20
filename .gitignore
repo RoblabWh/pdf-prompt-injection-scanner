@@ -3,6 +3,7 @@
 Thumbs.db
 desktop.ini
 venv/
+.venv/
 scan_logs/
 
 # Editoren & IDEs
@@ -11,6 +12,7 @@ scan_logs/
 *.swp
 *.swo
 *~
+*.bak
 
 # Logs & temporäre Dateien
 AGENTS.md
@@ -19,7 +21,9 @@ zustand.md
 *.log
 *.tmp
 .temp/
-
+tmp/
+log/
+scan_logs/
 
 
 # Build-Ergebnisse & Abhängigkeiten

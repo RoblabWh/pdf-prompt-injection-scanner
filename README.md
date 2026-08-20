@@ -1,16 +1,18 @@
-# PDF Prompt-Injection Scanner
+# Dokument Prompt-Injection Scanner
 
 Eine lokal laufende Python-Suite zur Erkennung **versteckter Prompt-Injektionen**
-in PDF-Dokumenten. Drei Scanner teilen sich eine gemeinsame Signatur-Datenbank
-und liefern konsistente Ergebnisse für Text, Bilder/OCR und einen vertieften
-Analysepfad – ohne Cloud, ohne Telemetrie.
+in PDF-Dokumenten **sowie Word (`docx`), Markdown (`md`) und Text (`txt`)**.
+Bis zu vier Scanner teilen sich eine gemeinsame Signatur-Datenbank und liefern
+konsistente Ergebnisse für Text, Bilder/OCR, einen vertieften Analysepfad und
+Textdokumente – ohne Cloud, ohne Telemetrie.
 
 ## Warum?
 
-LLM-basierte Tools verarbeiten PDFs häufig automatisch. Angreifer nutzen das aus:
-Befehle wie „ignore all instructions" werden so eingebettet, dass sie für Menschen
-unsichtbar bleiben, aber von der KI als Anweisung gelesen werden. Diese Suite
-erkennt solche Techniken strukturell und signaturbasiert im Dokument.
+LLM-basierte Tools verarbeiten Dokumente häufig automatisch (Upload, RAG,
+PDF-/Word-Import). Angreifer nutzen das aus: Befehle wie „ignore all
+instructions" werden so eingebettet, dass sie für Menschen unsichtbar bleiben,
+aber von der KI als Anweisung gelesen werden. Diese Suite erkennt solche
+Techniken strukturell und signaturbasiert im Dokument.
 
 ## Was wird erkannt?
 
@@ -22,6 +24,9 @@ erkennt solche Techniken strukturell und signaturbasiert im Dokument.
 - **`javascript:`-Links** sowie **Exfiltrations-/Upload-URLs**
 - **Anhänge** (Embedded Files)
 - **Bilder**: EXIF/XMP-Metadaten und OCR-Text (Deutsch + Englisch, optional Chinesisch)
+- **`.docx`**: Dokument-Text, Kopf-/Fußzeilen, Kommentare, Core-/App-Metadaten,
+  verborgene Schrift (`w:vanish`), Schriftgröße 0, heller/weißer Text
+- **`.txt` / `.md`**: Volltext, Markdown-Frontmatter-Blöcke, Metadaten
 
 Signaturmuster liegen auf **Englisch, Deutsch und Chinesisch** vor
 (98+ kompilierte Regex-Muster). Neue Muster an einer einzigen Stelle
@@ -52,22 +57,25 @@ pip install -r requirements.txt
 ## Schnelleinstieg
 
 ```bash
-./run_pdf_scanner.sh Pfad/zur/Datei.pdf
+./run_pdf_scanner.sh Pfad/zur/Datei.pdf      # alle relevanten Scanner (empfohlen)
+./run_pdf_scanner.sh Pfad/zur/Dokument.docx  # nur Scanner 4 (Textdokumenten)
 ```
 
-Die Pipeline führt alle drei Stufen aus und druckt einen konsolidierten
-Report. Exit-Code `0` bedeutet „sauber", jeder andere Wert ist Alarm.
+Die Pipeline wählt automatisch die passenden Scanner nach dem Dateityp und
+druckt einen konsolidierten Report. Exit-Code `0` bedeutet „sauber", jeder
+andere Wert ist Alarm.
 
 ### Alle Optionen
 
 ```bash
-./run_pdf_scanner.sh <pdf>                    # alle drei Stufen (Standard)
-./run_pdf_scanner.sh --only text <pdf>        # nur Text/Struktur
-./run_pdf_scanner.sh --only image <pdf>       # nur Bilder/OCR
-./run_pdf_scanner.sh --only injection <pdf>   # nur Tiefenscan
-./run_pdf_scanner.sh --batch <ordner>         # alle *.pdf im Ordner
-./run_pdf_scanner.sh --format text <pdf>      # Text- statt JSON-Report
-./run_pdf_scanner.sh -h                       # Hilfe
+./run_pdf_scanner.sh <datei>                   # passende Scanner je Typ (Standard)
+./run_pdf_scanner.sh --only text <pdf>         # nur Text/Struktur (Scanner 1)
+./run_pdf_scanner.sh --only image <pdf>        # nur Bilder/OCR (Scanner 2)
+./run_pdf_scanner.sh --only injection <pdf>    # nur Tiefenscan (Scanner 3)
+./run_pdf_scanner.sh --only doc <datei>        # nur Textdokumenten (Scanner 4)
+./run_pdf_scanner.sh --batch <ordner>          # alle *.pdf + *.docx + *.txt + *.md
+./run_pdf_scanner.sh --format text <datei>     # Text- statt JSON-Report
+./run_pdf_scanner.sh -h                        # Hilfe
 ```
 
 ### Einzelne Scanner (ohne Pipeline)
@@ -76,6 +84,7 @@ Report. Exit-Code `0` bedeutet „sauber", jeder andere Wert ist Alarm.
 python3 pdf_text_scanner.py  Datei.pdf --json
 python3 pdf_image_scanner.py Datei.pdf --json
 PYTHONPATH=pdf-injection-scanner python3 -m pdf_injection_scanner.scanner Datei.pdf --json
+python3 doc_scanner.py       Dokument.docx --json   # .docx / .txt / .md
 ```
 
 Die `--json`-Ausgabe lässt sich direkt in weitere Skripte oder Pipelines
@@ -88,12 +97,13 @@ einbinden.
 | 1 | `pdf_text_scanner.py` | Textlayer, Metadaten, XMP, JavaScript, Actions, Links, Anhänge, Layout-Anomalien |
 | 2 | `pdf_image_scanner.py` | EXIF/XMP, OCR (deu+eng, optional chi_sim) |
 | 3 | `pdf-injection-scanner/pdf_injection_scanner/scanner.py` | Weiß-/Mikro-/Off-Page-Text und Signatur-Treffer |
+| 4 | `doc_scanner.py` | `.docx`/`.txt`/`.md`: Dokument-Text, Metadaten, verborgene Schrift, Frontmatter |
 | Basis | `pdfscan_core.py` | Kompilierte Signatur-DB, Luminanz-Helfer, gemeinsame Schwellen |
 | DB | `prompt_patterns.py` | CANONICAL-Muster (EN/DE/ZH) |
-| CLI | `run_pdf_scanner.sh` | Kombinierte Pipeline (Batch, `--only`, `--format`) |
-| Report | `merge_reports.py` | Konsolidierter Report aus den drei Scannern |
+| CLI | `run_pdf_scanner.sh` | Kombinierte Pipeline (Typ-Routing, Batch, `--only`, `--format`) |
+| Report | `merge_reports.py` | Konsolidierter Report aus den aktiven Scannern |
 
-Alle drei Stufen importieren dieselbe Signatur-DB und dieselben
+Alle Stufen importieren dieselbe Signatur-DB und dieselben
 Layout-Schwellen aus `pdfscan_core` – neue Muster und Änderungen passieren
 deshalb an genau einer Stelle.
 
@@ -125,15 +135,44 @@ SUPPLEMENTARY_PATTERNS = [
 `run_pdf_scanner.sh` wertet jeden Exit-Code ungleich `0` als **ALARM** –
 praktisch für CI/CD und Skripte.
 
+## Testdateien
+
+Im Repository liegen fertige Testdateien für alle Scanner:
+
+| Datei | Abgedecktes Szenario |
+|-------|----------------------|
+| `test_docx1_body_injection.docx`   | Injektion im Dokument-Body (Textlayer) |
+| `test_docx2_comment_injection.docx`| Injektion in `word/comments.xml` |
+| `test_docx3_metadata_injection.docx`| Injektion in `docProps/core.xml` (Metadaten) |
+| `test_md1_frontmatter_injection.md`| Injektion im YAML-Frontmatter |
+| `test_md2_body_chinese.md`         | Injektion im Body (chinesisch) |
+| `test_md3_clean.md`                | Negativ-Test: saubere `.md` mit Frontmatter |
+| `test_txt1_injection_en.txt`       | Injektion im Volltext (englisch) |
+| `test_txt2_exfiltration.txt`       | Data-Exfiltration-Befehl |
+| `test_txt3_clean.txt`              | Negativ-Test: saubere `.txt` |
+| `test_*.pdf` (mehrere)             | Weißer/feiner Text, Metadaten, OCR-Bild, JS-Link usw. |
+
+Die `.docx`/`.txt`/`.md`-Dateien werden von `create_test_docs.py`
+(Standardbibliothek, ohne Abhängigkeiten) erzeugt und können jederzeit
+neu aufgebaut werden:
+
+```bash
+python3 create_test_docs.py            # schreibt in den Repo-Ordner
+python3 create_test_docs.py /tmp/tests # oder in einen eigenen Ordner
+```
+
 ## Tests
 
 ```bash
 python3 -m pytest test_scanner_suite.py -v
 ```
 
-7 Test-Cases decken die wichtigsten Erkennungs-Klassen ab: weißer Text,
+22 Test-Cases decken die wichtigsten Erkennungs-Klassen ab: weißer Text,
 Mikroschrift, Metadaten, `javascript:`-Link, Shared-DB-Konsistenz,
-Negativ-Tests und die Luminanz-Logik.
+Luminanz-Logik sowie DOCX/TXT/MD-Erkennung – dynamisch erzeugte Fälle
+(weisser Text, `w:vanish`, Frontmatter, …) und die neun statischen
+Testdateien oben (DOCX-Body/Kommentar/Metadaten, MD-Frontmatter/Body-ZH,
+TXT-EN/Exfiltration, zuzüglich zweier Negativ-Tests).
 
 ## Hinweise
 

@@ -120,7 +120,7 @@ def render_text(report: Dict[str, Any]) -> str:
     s = report["summary"]
     lines = []
     lines.append("=" * 60)
-    lines.append("KONSOLIDIERER SCAN-REPORT  (Scanner 1 + 2 + 3)")
+    lines.append("KONSOLIDIERER SCAN-REPORT  (alle aktiven Scanner)")
     lines.append("=" * 60)
     if report["clean"]:
         lines.append("SAUBER - keine Auffaelligkeiten gefunden.")
@@ -148,6 +148,7 @@ def main():
     p.add_argument("--text", help="JSON-Ergebnis von Scanner 1 (Text/Metadaten)")
     p.add_argument("--image", help="JSON-Ergebnis von Scanner 2 (Bild/OCR)")
     p.add_argument("--injection", help="JSON-Ergebnis von Scanner 3 (Tiefenscan)")
+    p.add_argument("--doc", help="JSON-Ergebnis von Scanner 4 (DOCX/TXT/MD)")
     p.add_argument("--format", choices=["json", "text"], default="json")
     args = p.parse_args()
 
@@ -155,6 +156,7 @@ def main():
         "text": args.text,
         "image": args.image,
         "injection": args.injection,
+        "doc": args.doc,
     }
     sources = {k: v for k, v in sources.items() if v}
 
