@@ -1,0 +1,1469 @@
+=== STARTE PDF-BILD-TIEFENSCAN (OCR & METADATEN): Masterarbeit-Schulte_signed.pdf ===
+Seitenanzahl: 153
+
+--- Seite 1 (2 Bild/er) ---
+  -> Bild 1 (XREF 2094):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 2095):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | tH University of Applied Sciences
+      | Westfälische Gelsenkirchen Bocholt Recklinghausen
+      | Hochschule
+
+--- Seite 2 (2 Bild/er) ---
+  -> Bild 1 (XREF 10):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | tH University of Applied Sciences
+      | Westfälische Gelsenkirchen Bocholt Recklinghausen
+      | Hochschule
+
+  -> Bild 2 (XREF 4):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 24 (2 Bild/er) ---
+  -> Bild 1 (XREF 77):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 78):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 28 (2 Bild/er) ---
+  -> Bild 1 (XREF 91):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Visueller Text im Bild erkannt:
+      | Head
+      | 
+      | Neck
+      | 
+      | Backbone
+
+  -> Bild 2 (XREF 92):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | P41
+      | 
+      | P2
+      | 
+      | P3
+      | 
+      | PA
+      | 
+      | P5
+      | 
+      | Bild
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SILU
+      | 
+      | aT Se
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | C3K2
+      | 
+      | =
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | EE EEE
+      | C3K2
+      | 
+      | ee
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | —— ——
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | ay —
+      | 
+      | C3K2
+      | 
+      | ——— 3.
+      | SPPF
+      | Pyramid Pooling
+      | ———S=E
+      | C2PSA
+      | Spatial Attention
+      | 
+      | YS
+      | 
+      | Backbone
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | Detect
+      | P3 Head
+      | 
+      | Detect
+      | P5 Head
+      | 
+      | Head
+
+--- Seite 42 (2 Bild/er) ---
+  -> Bild 1 (XREF 135):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 136):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Home > Overview > Group > Flight oo
+      | 
+      | Flight 09
+      | 
+      | Small Mapping Flight M30T
+      | 
+      | Created: 25.9.2025. 15:17:47
+      | 
+      | DJI Matrice 30T
+      | 908. Dorfstraße (Ep
+      | (Area: 16580 m
+      | 
+      | 1B mages 106
+      | 
+      | WebODM &
+      | 
+      | No tacks found
+      | 
+      | detvehicle-thr0.4
+      | 
+      | ul 2025080... O41 2025080.
+      | 
+      | 021 hea
+      | 
+      | Al Description
+      | Die Anatse der UAV Fotos:
+      | und Details: gi
+      | 
+      | Regenerate Description
+      | 
+      | Object Detection
+      | Type count Threshold
+      | 
+      | © vehicle 183 04
+      | % human 2 4
+      | 
+      | © fire
+      | 
+      | Analysis Mode
+      | 
+      | DA 2025080... 912025080... DJ 2025080.
+      | 
+      | 041 2025080... DUL 2025080...
+      | 
+      | 091 2025080... DJ1.2025080.
+      | 
+      | DaL_202S0809152438 0021
+      | 
+      | WIP
+      | 
+      | class fre
+      | Confidence:
+
+--- Seite 43 (2 Bild/er) ---
+  -> Bild 1 (XREF 140):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 141):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | = Home > Overview > Group > Flugo1
+      | 
+      | Flug 01
+      | 
+      | Mapping Flug M30T - Nur Teil des Felds, mit Fahrzeugen
+      | 
+      | Created: 29.7.2025 at
+      | 
+      | Star compte
+      | 
+      | 5:06
+      | 
+      | DJI Matrice 30T Al Description
+      | 
+      | Generate Description
+      | 
+      | WebODM Object Detection
+      | 
+      | no existing project
+      | 
+      | No tasks found Type Count Threshold
+      | * human 297 02 ©
+      | © vehicle 407 02 ©
+      | 
+      | fie 1 02 [02
+      | 
+      | Medium (Refine
+      | 
+      | Images
+      | 
+      | search filename
+      | 
+      | 7 Filters
+      | 
+      | ve
+      | 
+      | ee eee
+      | Er ot
+      | a
+      | 
+      | Th) aa FF Im
+      | 
+      | D,1_202408... DJI_202408
+      | 
+      | DJ1_ 202408...  DJL202408...
+      | 
+      | + Map
+      | 
+      | ‘Overlay Opacity
+      | 
+      | Images Data
+      | 
+      | «
+      | 
+      | Trajectory Overlays __Detections
+      | 
+      | o © ©
+      | 
+      | = Leatict | © Mapbox conirbutors.
+
+--- Seite 61 (2 Bild/er) ---
+  -> Bild 1 (XREF 196):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 197):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 62 (2 Bild/er) ---
+  -> Bild 1 (XREF 201):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 202):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Image height (px)
+      | 
+      | Image resolution comparison
+      | 
+      | 6000 »
+      | 
+      | 8000x6000
+      | (n=30, ARGUS_YOLO)
+      | 
+      | 5000 4
+      | 
+      | 4000 ®
+      | 
+      | 4056x3040 fa)
+      | (n=113, ARGUS_YOLO)
+      | 
+      | 4000x3000
+      | 3000 (n=212, ARGUS_YOLO)
+      | 1400x1050
+      | 2000 (n=2772, VisDrone)
+      | 1000 1400x788
+      | 
+      | (n=2232, VisDrone)
+      | 
+      | 1360x765
+      | (n=1318, VisDrone)
+      | 
+      | r 1 r r r 1 Tr
+      | 1000 2000 3000 4000 5000 6000 7000 8000
+      | Image width (px)
+
+--- Seite 66 (2 Bild/er) ---
+  -> Bild 1 (XREF 215):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 216):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | P41
+      | 
+      | P2)
+      | 
+      | P3
+      | 
+      | P4
+      | 
+      | PS
+      | 
+      | Bild
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | eS
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | ee SER
+      | 
+      | C3K2
+      | 
+      | C3K2
+      | 
+      | Concat
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | ey
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | 
+      | FE
+      | C3K2
+      | 
+      | ee —
+      | SPPF
+      | Pyramid Pooling
+      | C2PSA
+      | 
+      | Upsample
+      | 
+      | Spatial Attention
+      | 
+      | Backbone
+      | 
+      | Detect
+      | P4 Head
+      | Conv (s=2)
+      | Convolution + BatchNorm + SiLU
+      | Detect
+      | | C3K2 | P5 Head
+      | Head
+      | 
+      | Neck
+
+--- Seite 78 (2 Bild/er) ---
+  -> Bild 1 (XREF 253):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 254):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Image 57/140 | Fucbounds | | lo Test | | 30 Viewer
+      | 
+      | CATEGORIES
+      | 
+      | DETECTIONS (12) Aeweenoe
+      | eon pissen u
+      | 
+      | ee
+      | 
+      | © vericie Pkungrau 57%
+      | 
+      | © wn Denen. em
+      | 
+      | = min Discos ur.
+      | 
+      | am rn a
+      | 
+      | ara nn
+      | 
+      | © wie fone
+      | 
+      | pA —
+      | 
+      | ) 4 ® vende Prwesiber-01 er“
+      | vote put et
+      | 
+      | © venice PorschwarzOt con.
+
+--- Seite 80 (2 Bild/er) ---
+  -> Bild 1 (XREF 261):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 262):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 85 (2 Bild/er) ---
+  -> Bild 1 (XREF 278):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 279):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 87 (4 Bild/er) ---
+  -> Bild 1 (XREF 286):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 287):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 3 (XREF 288):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 289):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 88 (4 Bild/er) ---
+  -> Bild 1 (XREF 293):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 294):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 3 (XREF 295):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 296):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 89 (8 Bild/er) ---
+  -> Bild 1 (XREF 300):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 301):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 3 (XREF 302):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 303):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 5 (XREF 304):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 6 (XREF 305):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 7 (XREF 306):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 8 (XREF 307):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 96 (2 Bild/er) ---
+  -> Bild 1 (XREF 329):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 330):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | UTM northing (m)
+      | 
+      | 880
+      | 
+      | 860
+      | 
+      | 840
+      | 
+      | ©
+      | 8
+      | Ss
+      | 
+      | ®
+      | 3
+      | Ss
+      | 
+      | 780
+      | 
+      | 760
+      | 
+      | +5.676e6
+      | 
+      | Lateral bridges: 22 links over 58 images (fill = processing order)
+      | 
+      | footprint (processing-order fill)
+      | © bridge link
+      | 
+      | 299450
+      | 
+      | 299475 299500 299525 299550 299575 299600 299625
+      | UTM easting (m)
+
+--- Seite 98 (1 Bild/er) ---
+  -> Bild 1 (XREF 337):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 104 (3 Bild/er) ---
+  -> Bild 1 (XREF 356):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 357):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Object Detection Gall X Clipped
+      | 
+      | Type Count Threshold
+      | Bouman 38 02 ov
+      | @ vehice 34 02 oY
+      | 
+      | Embedding detection crops... — 90%
+
+  -> Bild 3 (XREF 358):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Object Detection All  Grouped
+      | 
+      | Type Count Threshold
+      | @ vehice 38 02 oY
+      | Bouman 58 02 ov
+      | 
+      | Analysis Mode Run Detection
+
+--- Seite 105 (3 Bild/er) ---
+  -> Bild 1 (XREF 362):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 363):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 3 (XREF 364):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 106 (2 Bild/er) ---
+  -> Bild 1 (XREF 368):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 369):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | = Home > Overview > Group > Mapping Flug Außenbrand
+      | 
+      | Mapping Flug Außenbrand
+      | 
+      | Viersen Vegetationsbrandübung zwischen Gebäuden
+      | 
+      | Created: 13.4.2026 at 12:07:39
+      | 
+      | status completed
+      | 
+      | © 3D reconstruction ready &
+      | 
+      | DJI Matrice 30T
+      | 
+      | strate ld) No de
+      | 
+      | Al Description
+      | 
+      | Generate Description
+      | 
+      | WebODM &
+      | 
+      | project id 203
+      | 
+      | Object Detection
+      | 
+      | Completed Type Count
+      | 
+      | Bouman 3
+      | 
+      | Bivehicle 12
+      | 
+      | Analysis Mode
+      | 
+      | Detections
+      | 
+      | Object #2 - human - 33
+      | 
+      | 11°C
+      | 
+      | ight Rain
+      | 
+      | = 1.37 m/s © (NE)
+      | 
+      | Sau
+      | 
+      | Threshold
+      | 
+      | 02
+      | 
+      | 02
+      | 
+      | Run
+      | 
+      | (Bimages
+      | 
+      | ‘& Grouped
+      | 
+      | Detection
+      | 
+      | © Objects
+      | 
+      | Map
+      | 
+      | Overlay Opacity
+      | 
+      | ee)
+      | 
+      | Images Data
+      | 
+      | Trajectory
+      | 
+      | ©
+      | 
+      | Detections
+      | 
+      | ©
+      | 
+      | _4 Leaflet | © Mapbox contributors
+
+--- Seite 117 (2 Bild/er) ---
+  -> Bild 1 (XREF 403):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 404):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 119 (2 Bild/er) ---
+  -> Bild 1 (XREF 411):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 412):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 121 (1 Bild/er) ---
+  -> Bild 1 (XREF 419):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 144 (4 Bild/er) ---
+  -> Bild 1 (XREF 489):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 490):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | cy (normalized)
+      | 
+      | 10
+      | 
+      | Bounding box center heatmap
+      | —_
+      | 
+      | |} =
+      | 
+      | cx (normalized)
+      | 
+      | 14
+      | 
+      | 12
+      | 
+      | 10
+      | 
+      | Count
+
+  -> Bild 3 (XREF 491):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 492):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | cy (normalized)
+      | 
+      | Bounding box center heatmap
+      | 
+      | 10
+      | 
+      | 0.8 4
+      | 
+      | 0.6
+      | 
+      | 0.4
+      | 
+      | 0.24
+      | 
+      | 0.4 0.6
+      | cx (normalized)
+      | 
+      | 1.0
+      | 
+      | 600
+      | 500
+      | 400
+      | €
+      | 5
+      | 300 S
+      | 200
+      | 
+      | 100
+
+--- Seite 145 (4 Bild/er) ---
+  -> Bild 1 (XREF 496):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 497):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Annotation count
+      | 
+      | Class distribution — Argus_YOLO_v3
+      | 
+      | 3500 train
+      | 
+      | =m val
+      | 3000
+      | 
+      | 2500
+      | 
+      | 2000
+      | 
+      | 1500
+      | 
+      | 1000
+      | 
+      | 500
+      | 
+      | ot ge
+      | 
+      | PN >
+
+  -> Bild 3 (XREF 498):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 499):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Annotation count
+      | 
+      | 140000
+      | 
+      | 120000
+      | 
+      | 100000
+      | 
+      | 80000
+      | 
+      | 60000
+      | 
+      | 40000
+      | 
+      | 20000
+      | 
+      | Class distribution — VisDrone
+      | 
+      | mm test
+      | = train
+      | ww val
+      | 
+      | lı. i... 4
+      | 
+      | et
+      | 
+      | or
+      | ge ro)
+      | 
+      | ye x N Ne a
+      | 5 a ge? gor oo
+      | 
+      | RCy
+      | at
+
+--- Seite 146 (4 Bild/er) ---
+  -> Bild 1 (XREF 503):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 504):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | 400
+      | 
+      | 300
+      | 
+      | Pixels
+      | 
+      | 100
+      | 
+      | Object size distribution per class (no outliers shown)
+      | 
+      | Object width (px)
+      | 
+      | Object height (px)
+      | 
+      | 400
+      | 
+      | 300
+      | 
+      | Pixels
+      | 
+      | 200
+      | 
+      | 100
+      | 
+      | N oe
+      | we or"
+      | 
+      | „ge
+
+  -> Bild 3 (XREF 505):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 506):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Object width (px)
+      | 
+      | Object size distribution per class (no outliers shown)
+      | 
+      | Object height (px)
+      | 
+      | 175
+      | 175
+      | 150 T
+      | 150
+      | we 125
+      | 100 T 7 100 7 T
+      | B £
+      | “os SB
+      | 50
+      | 50
+      | 7 a = *
+      | o o
+      | N e e x N x e e s N e e x N x e e s x
+      | Po BP Dee = Ge Ze Zee Se ee Ze Pom eg FMF sar pr wg
+      | N “
+      | 
+      | N
+
+--- Seite 147 (2 Bild/er) ---
+  -> Bild 1 (XREF 510):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 511):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Z Im, UTM-Iocal]
+      | 
+      | Z Im, UTM-Iocal]
+      | 
+      | Z Im, UTM-Iocal] Z Im, UTM-Iocal] Zim, UTM-Iocal] Z Im, UTM-Iocal]
+      | 
+      | Z Im, UTM-Iocal]
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | -25
+      | 
+      | 25
+      | 
+      | 02-ErftstadtBlessem/chunk15_img434 - altitude profile
+      | 
+      | — ps alt
+      | = recon alt
+      | 
+      | —
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk15_img504 - altitude profile
+      | 
+      | — orsalt
+      | = recon alt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk15_img574 - altitude profile
+      | 
+      | — Sait
+      | = recon alt
+      | 
+      | o 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk20_img434 - altitude profile
+      | 
+      | — salt
+      | = = BR = recon alt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk20_img504 - altitude profile
+      | 
+      | — salt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk25_img434 - altitude profile
+      | 
+      | GPS alt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk25_img504 - altitude profile
+      | 
+      | — orsalt
+      | = recon alt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk30_img434 - altitude profile
+      | 
+      | — esait
+      | = recon alt
+      | 
+      | o 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk30_img504 - altitude profile
+      | 
+      | — salt
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+      | 
+      | 02-ErftstadtBlessem/chunk40_img434 - altitude profile
+      | 
+      | — opsalt
+      | — recon alt << = =
+      | 
+      | 0 20 40 60 80 100 120 140
+      | 
+      | image index
+
+--- Seite 148 (2 Bild/er) ---
+  -> Bild 1 (XREF 515):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 516):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | 100
+      | 
+      | -100
+      | 
+      | -150
+      | 
+      | -200
+      | 
+      | 100
+      | 
+      | -100
+      | 
+      | -150
+      | 
+      | -200
+      | 
+      | 100
+      | 
+      | -100
+      | 
+      | -150
+      | 
+      | -200
+      | 
+      | 100
+      | 
+      | -100
+      | 
+      | -150
+      | 
+      | -200
+      | 
+      | 100
+      | 
+      | -100
+      | 
+      | -150
+      | 
+      | -200
+      | 
+      | -250
+      | 
+      | 02-ErftstadtBlessem/chunk15_img434
+      | 
+      | 02-ErftstadtBlessem/chunk15_img504
+      | 
+      | 02-ErftstadtBlessem/chunk15_img574
+      | 
+      | ATE=14.11m ATE=15.52m ATE=13.20m
+      | —— Ps — os — os
+      | — recon | 100 | — recon 100 | __ recon
+      | 50 50
+      | o o
+      | -50 -50
+      | -100 -100
+      | -150 -150
+      | -200 -200
+      | -100 0 100 200 300 -100 0 100 200 300 -100 0 100 200 300
+      | 02-ErftstadtBlessem/chunk20_img434 02-ErftstadtBlessem/chunk20_img504
+      | ATE=19.32m ATE=12.32m 02-ErftstadtBlessem/chunk20_img574
+      | — ps — Ps
+      | —— econ | 100 —— recon
+      | 50
+      | o
+      | -50 Failed (OOM)
+      | -100
+      | -150
+      | 200
+      | -100 o 100 200 300 -100 0 100 200 300
+      | 02-ErftstadtBlessem/chunk25_img434 02-ErftstadtBlessem/chunk25_img504
+      | ATE=14.22m ATE=13.98m 02-ErftstadtBlessem/chunk25_img574
+      | —— Ps 100. #5
+      | —— recon — recon
+      | 50
+      | o
+      | -50 Failed (OOM)
+      | -100
+      | -150
+      | -200
+      | -100 o 100 200 300 -100 0 100 200 300
+      | 02-ErftstadtBlessem/chunk30_img434 02-ErftstadtBlessem/chunk30_img504
+      | ATE=18.06m ATE=11.40m 02-ErftstadtBlessem/chunk30_img574
+      | — os — Ps
+      | —— recon 100 —— recon
+      | 50
+      | o
+      | -50 Failed (OOM)
+      | -100
+      | -150
+      | -200
+      | -100 o 100 200 300 -100 0 100 200 300
+      | 02-ErftstadtBlessem/chunk40_img434
+      | ATE=20.61m 02-ErftstadtBlessem/chunk40_img504 02-ErftstadtBlessem/chunk40_img574
+      | 
+      | 1
+      | an
+      | 8
+      | 8
+      | o
+      | Pr
+      | 5
+      | 8
+      | x
+      | 8
+      | 8
+      | 8
+      | 
+      | 400
+      | 
+      | Failed (OOM)
+      | 
+      | Failed (OOM)
+
+--- Seite 149 (4 Bild/er) ---
+  -> Bild 1 (XREF 520):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 521):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 3 (XREF 522):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 4 (XREF 523):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 150 (2 Bild/er) ---
+  -> Bild 1 (XREF 527):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 528):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 151 (2 Bild/er) ---
+  -> Bild 1 (XREF 532):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 533):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+--- Seite 152 (3 Bild/er) ---
+  -> Bild 1 (XREF 537):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 0...
+    [OCR] Kein visueller Text im Bild erkannt.
+
+  -> Bild 2 (XREF 538):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | Mapping Flug Außenbrand
+      | 
+      | © 3 reconstruction ready &
+      | 
+      | DJI Matrice 30T Al Description
+      | 
+      | derstraße E)
+      | 
+      | Generate Description
+      | 
+      | Object Detection
+      | 
+      | ‘Type Count Threshold
+      | Bruna ars 02
+      | & vehicle 223 02
+      | 
+      | Group > Mapping Flug Außenbı
+      | 
+      | #137 m/s eine)
+      | 
+      | WeboDM &
+      | 
+      | Completed
+      | 
+      | SANS Grouped
+      | 
+      | Run Detection
+      | 
+      | (Gimases Obieds
+      | 
+      | Y Filters
+      | 
+      | DJ1 2024081... DJI 2024081... DJL2024081... DJI_2024081....DJI_2024081...
+      | 
+      | nA
+      | 
+      | 8
+      | 
+      | gs
+      | 
+      | Map Images Data
+      | 
+      | Overlay Opacity Trajectory Overlays Detections
+      | 
+      | > © ©
+      | 
+      | fet | © Mapbox contributors
+
+  -> Bild 3 (XREF 539):
+    [Metadaten] Erweiterte Info/XMP-Blöcke gefunden:
+      | adobe: 100...
+      | adobe_transform: 1...
+    [OCR] Visueller Text im Bild erkannt:
+      | = Home > Overview > Group > Mapping Flug Außenbrand
+      | 
+      | Mapping Flug Außenbrand
+      | 
+      | Viersen Vegetationsbrandübung zwischen Gebäuden
+      | 
+      | Created: 13.4.2026 at 12:07:39
+      | ‘status completed
+      | 
+      | © 3 reconstruction ready &
+      | 
+      | Ion complete — ges registered
+      | 
+      | Al Description
+      | 
+      | Generate Description
+      | 
+      | Object Detection
+      | 
+      | Type Count Threshold
+      | 
+      | Bin 2 ass
+      | & venice 9 04
+      | 
+      | Analysis Mode
+      | 
+      | Images
+      | 
+      | search filename
+      | 
+      | is
+      | 
+      | DJ1 2024081...  DJl_2024081...
+      | 
+      | 11°C
+      | Light Rain
+      | 
+      | #137 m/s eine)
+      | 
+      | WeboDM &
+      | 
+      | id 208
+      | Fast_OD... (Completed
+      | 
+      | ALS crouped
+      | 
+      | Run Detection
+      | 
+      | (Gimases {objects
+      | 
+      | DJ1_2024081...
+      | 
+      | +]
+      | 
+      | Dit
+      | 
+      | Map Images Data
+      | 
+      | Trajectory Overlays Detections
+      | 
+      | ©
+      | 
+      | "= Loafet | © Mapbox contributors
+
+==================================================
+=== TIEFENSCAN-ZUSAMMENFASSUNG ===
+Gescannte Bilder insgesamt: 83
+Kritische Funde in Bildern: 0
+==================================================
+
+[✓] Tiefenscan abgeschlossen. Bild-Inhalte und Bild-Metadaten sind unauffällig.
