@@ -10,6 +10,7 @@ scan_logs/
 .vscode/
 *.swp
 *.swo
+*~
 
 # Logs & temporäre Dateien
 AGENTS.md
