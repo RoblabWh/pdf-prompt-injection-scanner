@@ -1,0 +1,14 @@
+# Python-Abhängigkeiten für die PDF Prompt-Injection Scanner-Suite
+#
+# Installation:  pip install -r requirements.txt
+# System (Ubuntu/Debian) zusätzlich:  sudo apt install tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng
+
+pymupdf>=1.24       # PyMuPDF – PDF-Text-/Metadaten-/JS-Auszug (Scanner 1 & 2)
+pdfplumber>=0.10    # Charakter-/Farb-Zugriff für Layout-Anomalien (Scanner 3)
+pytesseract>=0.3    # OCR-Schnittstelle (Scanner 2)
+pillow>=10.0        # Bild-/EXIF-/XMP-Zugang (Scanner 2)
+click>=8.0          # CLI für Scanner 3
+rich>=13.0          # hübsche Terminal-Ausgabe (Scanner 3, Reports)
+
+# Tests (optional)
+pytest>=8.0

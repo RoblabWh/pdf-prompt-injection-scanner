@@ -1,0 +1,4 @@
+# Agent-Regeln (PDF Prompt-Injection Scanner)
+
+- **Zu Beginn jeder Session:** `zustand.md` lesen, um aktuellen Projektzustand zu kennen.
+- **Vor dem Verlassen:** `zustand.md` aktualisieren (Änderungen, offene Aufgaben, Historie).
