@@ -95,7 +95,60 @@ PROMPT_PATTERNS = [
     r"(?i)\b(?:send|exfiltrate|transmit|upload|forward|post|leak)\s+(?:the|any|all|my|your)\s+(?:data|secret|token|api|key|password|credential|cookie|session)\s+to\s+\S+\s",
     r"(?i)\b(?:send|forward|exfiltrate|transmit|upload|post|leak)\s+(?:the|any|all|my|your)\s+(?:data|secret|token|api|key|password|credential|cookie|session)\s+to\s+(?:https?|ftp|webhook|endpoint|url)\s*\S",
 
-    # ── DE – Instruction Override ──────────────────────────────────────
+    # ── EN – Chat-Template / Prompt-Framing Tokens ─────────────────────
+    # Modellbegrenzer-Tokens (Llama 1/2/3, ChatML, Gemma 2). Ihr Vorhandensein
+    # in einem Fremd-Dokument ist ein starkes Indiz für Prompt-Framing-Attacken.
+    r"<\|im_start\|>",
+    r"<\|im_end\|>",
+    r"<\|user\|>",
+    r"<\|assistant\|>",
+    r"<\|bos\|>",
+    r"<\|eos\|>",
+    r"<\|startoftext\|>",
+    r"<\|endoftext\|>",
+    r"<\|system\|>",
+    r"<\|turn\|>",
+    r"<start_of_turn>",
+    r"<end_of_turn>",
+
+    # ── EN – PromptInject (NeurIPS 2022) – Goal-Hijacking ──────────────
+    # „nevermind"-Variante und der dokumentierte screaming-stop-Trigger.
+    r"(?i)\bnevermind[.,;:!\s]+(?:ignore|disregard|forget|override|drop|abandon)\s+(?:any\s+|all\s+|the\s+|your\s+|previous\s+and\s+following\s+)?(?:instructions?|rules?|policies?|guidelines?|safety)\b",
+    r"(?i)\bstop\s+everything[!.\s]*(?:now[!.\s]*)*(?:[\s.,;:]+)?(?:just\s+)?(?:say|print|output|repeat|reveal|show)\b",
+    r"(?i)\b(?:ignore|disregard|forget|override)\b.{0,60}\b(?:instructions?|rules?|policies?|guidelines?|safety|context)\b.{0,90}\b(?:just\s+|instead\s+)?(?:say|print|output|repeat|reveal|show|echo)\b",
+    r"(?i)\b(?:ignore|disregard|forget|override)\s+(?:any\s+|all\s+|the\s+|your\s+|both\s+)?(?:previous\s+and\s+(?:following|subsequent)\s+)?(?:instructions?|rules?|policies?|guidelines?)\b.{0,90}\b(?:just\s+|instead\s+)?(?:say|print|output|repeat|reveal|show|echo)\b",
+
+    # ── EN – PromptInject (NeurIPS 2022) – Prompt-Leaking ──────────────
+    # Die dokumentierte „spell-check-instead"-Leak-Technik.
+    r"(?i)\bignore\s+(?:the\s+)?(?:previous|prior|above|all|any|original|initial|system)\s+instructions?\s+and\s+instead\s+(?:spell\s*-?\s*check|spellcheck|print|output|repeat|echo|list|show|reveal|display)\s+(?:the\s+)?(?:previous|prior|above|same|original|initial|system|current|entire)\s+instructions?\b",
+    r"(?i)\binstead\s+(?:spell\s*-?\s*check|spellcheck|print|output|repeat|echo|list|show|reveal|display)\s+(?:the\s+)?(?:previous|prior|above|same|original|initial|system|current|entire)\s+instructions?\b",
+    r"(?i)\b(?:spell\s*-?\s*check|spellcheck)\s+(?:the\s+)?(?:previous|prior|above|same|original|initial|system|current|entire)\s+instructions?\b",
+
+    # ── EN – Goodside (garak probes.goodside) ──────────────────────────
+    r"(?i)\bpretend\s+(?:you\s+)?(?:are|you\s+are|you\s*re)\s+(?:an?\s+)?(?:ai|bot|assistant|character|entity|being|person|agent|expert|unrestricted|uncensored)\s+who\s+would\s+be\s+willing\s+to\b",
+
+    # ── EN – GCG adversarial Suffix (garak probes.gcg) ─────────────────
+    # Bekannte Sufx-Marker aus der GCG-Arbeit („valid: I am …").
+    r"\bvalid\s*:\s*i\s+am\b",
+    r"(?i)\bi\s+am\s+(?:a|an|the)\s+(?:great|good|helpful|useful|wonderful|excellent|outstanding|perfect|fantastic|remarkable|incredible|superb|first-class|top-notch|unparalleled|incomparable|matchless|peerless|unrivaled|superlative)\s+(?:ai|assistant|bot|model|being|entity|character|program|system|machine|companion|helper|servant)\b",
+
+    # ── EN – Encoding / Obfuscation (garak probes.encoding) ────────────
+    # Base64 / ROT / quoted-printable / URL-Encodierung als Injektionsvektor.
+    r"(?i)\b(?:base64|btoa|b64|rot13|rot47|quoted[\- ]?printable|url[\- ]?encod(?:e|ed)|percent[\- ]?encod(?:e|ed)|hex(?:adecimal)?|uuencod\w*|punycode)\s*[\- ]?\s?encod\w*\s+(?:instructions?|prompt|payload|text|data|message|command|secret|token|key)\b",
+    r"(?i)\b(?:decode|decoded|decoding|base64[\- ]?decod\w*|b64[\- ]?decod\w*|rot13[\- ]?decod\w*|unquote[\- ]?\s?)\s+(?:the\s+|this\s+|following\s+|that\s+)?(?:base64|btoa|b64|rot13|rot47|quoted[\- ]?printable|url[\- ]?encod\w*|percent[\- ]?encod\w*|hex(?:adecimal)?|encod\w*|obfuscat\w*)\s+(?:instructions?|prompt|payload|command|text|data|message|content|secret|token|key|payload)\b",
+    r"(?i)\b(?:instructions?|prompt|payload|commands?|directives?|secret|token|key)\s+(?:in|encoded\s+in|as|hidden\s+in|embedded\s+in|contained\s+in|wrapped\s+in)\s+(?:a\s+|an\s+|the\s+)?(?:base64|b64|rot13|rot47|quoted[\- ]?printable|url[\- ]?encod\w*|hex(?:adecimal)?|obfuscat\w*|encod\w*|cipher\w*)\b",
+
+    # ── EN – Indirekte / URL-geführte Injektion ────────────────────────
+    # „Folge den Anweisungen unter https://..." – klassischer OWASP-LLM01-Indiz.
+    r"(?i)\b(?:follow|obey|execute|implement|apply|enact|comply\s+with|adopt|heed|hearken\s+to)\s+(?:the\s+|all\s+|every\s+|these|following\s+)?(?:instructions?|rules?|commands?|directives?|guidance|guidelines|policies?|order|orders)\s+(?:at|from|in|inside|provided\s+by|listed\s+(?:at|in)|described\s+at|posted\s+at|found\s+at|given\s+at|located\s+at|served\s+at|contained\s+at)\s+https?://",
+    r"(?i)\b(?:download|fetch|retrieve|load|access|read|parse|open|visit|navigate\s+to|go\s+to)\s+(?:the\s+|this\s+|a\s+|an\s+)?(?:file|document|url|link|web\s*page|page|instruction|instructions?|prompt|payload|rule|rules?|command|commands?)\s+(?:located\s+at|from|at|in|on|given\s+at|provided\s+at|served\s+at|posted\s+at|found\s+at|hosted\s+at)\s+https?://.{0,160}\b(?:follow|obey|execute|implement|apply|enact|comply\s+with|adopt)\b",
+
+    # ── DE – Instruction Override / PromptInject-Leak (deutsch) ───────
+    # Deutsches Gegenstück der "spell-check-instead"-Leak-Technik.
+    # Umlaute werden über [üu]/[äa] etc. optional gehalten.
+    r"(?i)\bignoriere\s+(?:die\s+)?(?:vorherigen?|bisherigen?|vorangegangenen?|obigen?|gleichen|urspr[üu]nglichen?)\s+(?:Anweisungen?|Regeln?|Richtlinien?)\s+und\s+(?:pr[üu]fe|pruefe|korr[üu]giere|spelle\s*-?\s*check(?:e)?|wiederhole|rezitiere|lies(?:\s+ein)?\s+vor|dr[üu]cke\s+aus|zeige)\s+(?:anstatt(?:des)?s\s+|stattdessen\s+|die\s+|deren\s+)?(?:vorherigen?|bisherigen?|vorangegangenen?|obigen?|gleichen|urspr[üu]nglichen?)?\s*(?:Anweisungen?|Regeln?|Richtlinien?|Rechtschreibung|Orthografie|Schreibweise)?",
+    r"(?i)\b(?:pr[üu]fe|pruefe|korr[üu]giere|spelle\s*-?\s*check(?:e)?|wiederhole|rezitiere|lies(?:\s+ein)?\s+vor)\s+(?:anstatt(?:des)?s\s+|stattdessen\s+|die\s+|deren\s+)?(?:vorherigen?|bisherigen?|vorangegangenen?|obigen?|gleichen|urspr[üu]nglichen?)\s+(?:Anweisungen?|Regeln?|Richtlinien?)\b.{0,40}\b(?:Rechtschreibung|Orthografie|Schreibweise)\b",
+
     r"(?i)\bignoriere\s+(?:alle\s+|jede\s+|keine\s+)?(?:vorherigen|vorherige)\s+(?:Anweisungen|Regeln|Richtlinien|Aufträge|Anleitungen)\b",
     r"(?i)\b(?:überspringe|überspringst|übergehe|umgehe|meide|verwende\s+nicht|nutze\s+nicht|lass\s+(?:weg|aus))\s+(?:deine|die|alle|keine)\s+Sicherheits(?:richtlinien|regeln)\b",
     r"(?i)\bstatt\s+(?:den|die|deine)\s+(?:Anweisungen|Regeln|Richtlinien|Aufträge)\s+zu\s+folgen\b",
@@ -142,6 +195,14 @@ PROMPT_PATTERNS = [
     r"(?:回答|回复|回应|输出).{0,6}(?:结尾|末尾|最后|开头|开头部分).{0,6}(?:加上|添加|写上|附上|包含|加入)",
     r"(?:结束|完成|收尾|结尾)(?:你的|此)?(?:回答|回复|输出).{0,6}(?:加上|添加|写上|附上)(?:这个词|一词|这句话|这个短语)",
     r"(?:发送|传输|上传|转发|泄露)(?:你的|所有|机密|token|密钥|密码|凭证|会话|cookie)(?:到|至|给).{0,30}(?:https?|ftp|webhook|endpoint|url)",
+
+    # ── ZH – PromptInject-Äquivalente (screaming-stop / encoding / leak) ─
+    r"停止(?:一切|所有|任何)(?:[!！\s]*(?:现在|立即|马上))?(?:[!！\s]*(?:说|回答|输出|打印|说出|写出)\s*[:：\s]*[\u201c\u201d\u2018\u2019]*)?",
+    r"(?:请|你)(?:解码|解密)(?:下面的|以下的|如下的)?(?:base64|rot13|rot47|十六进制|hex|url)编码(?:的|的)?(?:指令|命令|提示|文本|内容|数据)",
+    r"(?:访问|打开|获取|读取|加载|下载)[^\n]{0,12}(?:网址|链接|网站|url|地址)[^\n]{0,30}(?:遵循|遵守|执行|实施|跟随|按)(?:其中|其|那些)?(?:的)?(?:指令|命令|说明)",
+    r"(?:忘记|抛弃|放弃|忘却)你的(?:所有|全部|一切)?(?:规则|指令|设定|限制)[^\n]{0,30}从现在起",
+    r"(?:记住|牢记|记住你的)(?:新|新的)(?:身份|角色|模式|设定|规则)",
+    r"\b(?:system|user|assistant)\s*[:：]\s*\n",
 ]
 
 # ── Zusätzliche Signatur-Gruppen (in `pdfscan_core.SUPPLEMENTARY_PATTERNS`) ─

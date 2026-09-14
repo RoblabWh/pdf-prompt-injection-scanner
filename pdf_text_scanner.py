@@ -9,12 +9,15 @@ from pdfscan_core import (
     is_light_or_white,
     luminance,
     find_matches_with_positions,
+    find_text_anomalies,
+    language_finding,
 )
 
 SEVERITY_LABELS = {"high": "KRITISCH", "medium": "WARNUNG", "low": "HINWEIS"}
 
-# Verdächtige Link-Ziele: Script-Schema + Exfiltration-/Upload-Phrasen
-JS_LINK_RE = re.compile(r"^\s*javascript\s*:", re.IGNORECASE)
+# Verdächtige Link-Ziele: Script-Schemata + Exfiltration-/Upload-Phrasen
+JS_LINK_RE = re.compile(r"^\s*(?:javascript|vbscript|script)\s*:", re.IGNORECASE)
+DANGEROUS_DATA_URI_RE = re.compile(r"^\s*data\s*:\s*(?:text|application)\s*[/]", re.IGNORECASE)
 EXFIL_LINK_RE = re.compile(
     r"(?:leak|exfil|upload|send|post|transmit)\S*\s*(?:to)?.*"
     r"(?:key|token|secret|credential|session|cookie|password)\b",
@@ -44,6 +47,13 @@ def _scan_field(value, page, finding_type, findings):
         findings.append(_finding(
             page, finding_type, "high", value,
             f"Muster ({label}): …{snippet}…"))
+    for a in find_text_anomalies(value):
+        findings.append(_finding(
+            page, finding_type, a["severity"], a["snippet"], a["description"]))
+    lang = language_finding(value)
+    if lang:
+        findings.append(_finding(
+            page, finding_type, lang["severity"], value[:400], lang["description"]))
 
 
 def _scan_embedded_js(doc, findings, out):
@@ -109,7 +119,11 @@ def _scan_links(doc, findings, out):
             if JS_LINK_RE.search(uri):
                 findings.append(_finding(
                     page_num + 1, "Link-JavaScript", "high", uri[:300],
-                    "Link führt ein javascript:-Schema aus"))
+                    "Link führt ein javascript:/vbscript:-Schema aus"))
+            elif DANGEROUS_DATA_URI_RE.search(uri):
+                findings.append(_finding(
+                    page_num + 1, "Link-DataURI", "high", uri[:300],
+                    "Link verwendet ein data:-URI (text/application) als Ziel"))
             elif EXFIL_LINK_RE.search(uri):
                 findings.append(_finding(
                     page_num + 1, "Link-Exfiltration", "high", uri[:300],
@@ -192,6 +206,8 @@ def scan_text_and_metadata(pdf_path, verbose=True):
         page = doc[page_num]
         w, h = page.rect.width, page.rect.height
         text_page = page.get_text("dict")
+        page_texts = []
+        span_labels = set()
 
         for block in text_page.get("blocks", []):
             if block.get("type") != 0:  # nur Textblöcke
@@ -211,27 +227,58 @@ def scan_text_and_metadata(pdf_path, verbose=True):
                     is_tiny = (size < MIN_TEXT_SIZE)
                     is_off_page = (bbox[0] < 0 or bbox[1] < 0 or bbox[2] > w or bbox[3] > h)
 
+                    visual_notes = []
                     if is_white or is_tiny or is_off_page:
-                        reasons = []
                         if is_white:
                             r = (color_int >> 16) & 255
                             g = (color_int >> 8) & 255
                             b = color_int & 255
-                            reasons.append(f"Heller/weißer Text (Luminanz: {lum:.0f}, RGB: {r},{g},{b})")
+                            visual_notes.append(f"Heller/weißer Text (Luminanz: {lum:.0f}, RGB: {r},{g},{b})")
                         if is_tiny:
-                            reasons.append(f"Mikroschrift ({size:.2f} pt)")
+                            visual_notes.append(f"Mikroschrift ({size:.2f} pt)")
                         if is_off_page:
-                            reasons.append("Off-Page (Außerhalb des Rahmens)")
+                            visual_notes.append("Off-Page (Außerhalb des Rahmens)")
                         findings.append(_finding(
                             page_num + 1, "Text-Anomalie", "medium", text,
-                            ", ".join(reasons)))
+                            ", ".join(visual_notes)))
+
+                    page_texts.append(text)
 
                     # Semantische Prüfung über die gemeinsame Signatur-DB
                     for label, matched, s, e in find_matches_with_positions(text):
+                        span_labels.add(label)
                         snippet = text[max(0, s - 30): min(len(text), e + 30)].strip()
                         findings.append(_finding(
                             page_num + 1, "Textlayer-Prompt", "high", text,
                             f"Muster ({label}): …{snippet}…"))
+
+                    # Strukturanomalien (unsichtbare Zeichen, Bidi, …)
+                    for a in find_text_anomalies(text):
+                        findings.append(_finding(
+                            page_num + 1, "Text-Anomalie", a["severity"],
+                            a["snippet"], a["description"]))
+
+                    # Sprach-Kontextsignal: unerwartete Sprache (non-EN/DE) –
+                    # Eskalation auf "high", wenn derselbe Span zusätzlich
+                    # weiß/klein/off-page gerendert wird.
+                    lang = language_finding(text, ", ".join(visual_notes))
+                    if lang:
+                        findings.append(_finding(
+                            page_num + 1, "Sprach-Kontext", lang["severity"],
+                            text[:400], lang["description"]))
+
+        # Seiten-Kombiniertes-Matching: injizierte Phrasen können künstlich
+        # über mehrere Spans/Zeilen zerlegt werden; der zusammengebaute
+        # Seitentext schließt diese Fluchttechnik zu.
+        page_text = " ".join(page_texts)
+        if page_text:
+            for label, matched, s, e in find_matches_with_positions(page_text):
+                if label in span_labels:
+                    continue  # bereits im Einzel-Span erfasst
+                snippet = page_text[max(0, s - 30): min(len(page_text), e + 30)].strip()
+                findings.append(_finding(
+                    page_num + 1, "Textlayer-Prompt", "high", page_text[:400],
+                    f"Muster ({label}): …{snippet}… (Multi-Span)"))
 
     # Deduplizierung (gleiche Seite + Typ + Inhalt)
     dedup = []

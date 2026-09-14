@@ -27,6 +27,7 @@ from pdfscan_core import (  # noqa: E402
     luminance,
     COMPILED_PATTERNS,
     find_matches_with_positions,
+    language_finding,
 )
 
 console = Console()
@@ -246,6 +247,18 @@ def scan_page(page, page_num):
     # Content pattern detection
     full_text = page.extract_text() or ""
     findings.extend(scan_suspicious_patterns(full_text, page_num))
+
+    # Sprach-Kontext: fremdsprachiger Text (non-EN/DE) -> medium.
+    # Weiße/Tiny-Schrift ist hier bereits oben mit "high" erfasst.
+    lang = language_finding(full_text)
+    if lang:
+        findings.append(Finding(
+            page=page_num,
+            finding_type="Sprach-Kontext",
+            description=lang["description"],
+            content=full_text[:400],
+            severity=lang["severity"],
+        ))
 
     return findings
 

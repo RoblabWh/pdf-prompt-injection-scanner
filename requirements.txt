@@ -12,3 +12,4 @@ rich>=13.0          # hübsche Terminal-Ausgabe (Scanner 3, Reports)
 
 # Tests (optional)
 pytest>=8.0
+langdetect

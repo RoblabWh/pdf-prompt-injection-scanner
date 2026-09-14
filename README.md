@@ -24,12 +24,36 @@ Techniken strukturell und signaturbasiert im Dokument.
 - **`javascript:`-Links** sowie **Exfiltrations-/Upload-URLs**
 - **Anhänge** (Embedded Files)
 - **Bilder**: EXIF/XMP-Metadaten und OCR-Text (Deutsch + Englisch, optional Chinesisch)
-- **`.docx`**: Dokument-Text, Kopf-/Fußzeilen, Kommentare, Core-/App-Metadaten,
-  verborgene Schrift (`w:vanish`), Schriftgröße 0, heller/weißer Text
+- **`.docx`**: Dokument-Text, Kopf-/Fußzeilen, Kommentare, Fuß-/Endnoten,
+  Core-/App-Metadaten, verborgene Schrift (`w:vanish`), Schriftgröße 0, heller/weißer Text
 - **`.txt` / `.md`**: Volltext, Markdown-Frontmatter-Blöcke, Metadaten
+- **Evasions-/Steckling-Techniken (strukturbasiert, ohne Regex-Treffer nötig)**
+  - **Unsichtbare Zeichen** – Zero-Width-Space/-Joiner, Soft-Hyphen, BOM, …
+    (cf. garak `probes.badchars`)
+  - **Bidirectional Overrides** (U+202A–U+202E) zur visuellen Verschleierung
+    von Code/URLs
+  - **Verdächtige Steuerzeichen**
+  - **Sehr lange Base64/Hex-artige Token-Läufe** (mögliche Encoded-Payloads)
+- **Chat-Template / Prompt-Framing-Tokens** aus fremden Dokumenten:
+  Llama 1/2/3 (`im_start`, `im_end`, `system`, …), ChatML (`user`, `assistant`,
+  `bos`/`eos`), Gemma 2 (`start_of_turn`/`end_of_turn`)
+- **Indirekte / URL-geführte Injektion** („Folge den Anweisungen unter
+  `https://…`“, typisch OWASP-LLM01)
+
+**Neu dokumentierte Angriffsklassen** (auf GitHub referenziert):
+
+| Technik | Quelle auf GitHub |
+|---------|-------------------|
+| Goal-Hijacking (`nevermind`, `STOP EVERYTHING`, `just say/print`) | `agencyenterprise/PromptInject` (NeurIPS 2022) |
+| Prompt-Leaking (`spell-check the previous instructions`) | `agencyenterprise/PromptInject` |
+| Goodside („Pretend you are … who would be willing to …“) | `NVIDIA/garak` (`probes.goodside`) |
+| Adversarial Suffix-Marker (`valid: I am …`) | `NVIDIA/garak` (`probes.gcg`) |
+| Encoding-/Obfuskationsvektoren (Base64, ROT13/47, QP, URL/Hex) | `NVIDIA/garak` (`probes.encoding`) |
+| Unsichtbare Zeichen (Evasion) | `NVIDIA/garak` (`probes.badchars`) |
+| DAN/AutoDAN/DanInTheWild, DevMode v2, ChatML-Tokens | `NVIDIA/garak` (`probes.dan`, `probes.chatml`) |
 
 Signaturmuster liegen auf **Englisch, Deutsch und Chinesisch** vor
-(98+ kompilierte Regex-Muster). Neue Muster an einer einzigen Stelle
+(133+ kompilierte Regex-Muster). Neue Muster an einer einzigen Stelle
 (`prompt_patterns.py`) ergänzen.
 
 ## Voraussetzungen
@@ -41,7 +65,7 @@ Signaturmuster liegen auf **Englisch, Deutsch und Chinesisch** vor
 ## Installation
 
 ```bash
-# 1) Systemabhängigkeiten (Ubuntu/Debian)
+# 1) Systemabhängigkeiten (Ubuntu/Debian) – nur für OCR (Scanner 2)
 sudo apt update
 sudo apt install tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng
 
@@ -49,10 +73,18 @@ sudo apt install tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng
 sudo apt install tesseract-ocr-chi-sim
 
 # 2) Python-Umgebung
+#    Variante A – uv (empfohlen, schnellste Installation, kein venv nötig):
+uv pip install -r requirements.txt --system
+#    …oder mit eigener uv-Umgebung:
+uv venv && source .venv/bin/activate && uv pip install -r requirements.txt
+#    Variante B – klassisch (pip + venv):
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+> uv installieren (falls noch kein `uv` vorhanden):
+> `curl -LsSf https://astral.sh/uv/install.sh | sh`
 
 ## Schnelleinstieg
 
@@ -167,12 +199,14 @@ python3 create_test_docs.py /tmp/tests # oder in einen eigenen Ordner
 python3 -m pytest test_scanner_suite.py -v
 ```
 
-22 Test-Cases decken die wichtigsten Erkennungs-Klassen ab: weißer Text,
+33 Test-Cases decken die wichtigsten Erkennungs-Klassen ab: weißer Text,
 Mikroschrift, Metadaten, `javascript:`-Link, Shared-DB-Konsistenz,
-Luminanz-Logik sowie DOCX/TXT/MD-Erkennung – dynamisch erzeugte Fälle
-(weisser Text, `w:vanish`, Frontmatter, …) und die neun statischen
-Testdateien oben (DOCX-Body/Kommentar/Metadaten, MD-Frontmatter/Body-ZH,
-TXT-EN/Exfiltration, zuzüglich zweier Negativ-Tests).
+Luminanz-Logik, DOCX/TXT/MD-Erkennung **sowie die neu dokumentierten
+Angriffsklassen** – PromptInject (`nevermind` / `STOP EVERYTHING` /
+`spell-check`-Leak), Goodside, GCG-Suffix-Marker, Encoding-/Obfuskation,
+URL-geführte Indirekt-Injection, Chat-Template-Tokens (Llama/ChatML),
+Zero-Width- & Bidi-Overrides, lange Encoded-Läufe – inkl. Negativ-Tests
+sauberer Technik-Dokus (z. B. Base64-Erklärung).
 
 ## Hinweise
 

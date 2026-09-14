@@ -16,8 +16,26 @@ unsichtbar, aber für LLM-basierte Parser (z. B. RAG-Pipelines) lesbar sind.
 - eingebettetes JavaScript, Auto-Execute-Actions, `javascript:`-Links, Exfiltrations-URLs
 - Anhänge (Embedded Files)
 - In `.docx`: verborgene Schrift (`w:vanish`), Schriftgröße 0, helles/weißes Text
-- In `.docx`: Injektionen in Kopf-/Fußzeilen, Kommentare und Core-/App-Metadaten
+- In `.docx`: Injektionen in Kopf-/Fußzeilen, Kommentare, Fuß-/Endnoten und Core-/App-Metadaten
 - In `.md`: Injektionen im Frontmatter (YAML-Block)
+- **Evasions-Techniken (strukturbasiert, ohne Regex-Treffer nötig)**:
+  Unsichtbare Zeichen (Zero-Width, Soft-Hyphen, BOM – cf. garak `badchars`),
+  Bidirectional Overrides (U+202A–U+202E), verdächtige Steuerzeichen,
+  sehr lange Base64/Hex-artige Token-Läufe
+- **Chat-Template-Tokens** (Llama 1/2/3, ChatML, Gemma 2) aus Fremd-Dokumenten
+- **Indirekte / URL-geführte Injektion** („Folge den Anweisungen unter …")
+
+**Neu dokumentierte Angriffsklassen (GitHub-Referenzen):**
+
+| Technik | Quelle |
+|---------|--------|
+| Goal-Hijacking (`nevermind`, `STOP EVERYTHING`, `just say/print`) | `agencyenterprise/PromptInject` (NeurIPS 2022) |
+| Prompt-Leaking (`spell-check the previous instructions`) | `agencyenterprise/PromptInject` |
+| Goodside („Pretend you are … who would be willing to …“) | `NVIDIA/garak` (`probes.goodside`) |
+| Adversarial-Suffix-Marker (`valid: I am …`) | `NVIDIA/garak` (`probes.gcg`) |
+| Encoding-/Obfuskation (Base64, ROT13/47, QP, URL/Hex) | `NVIDIA/garak` (`probes.encoding`) |
+| Unsichtbare Zeichen (Evasion) | `NVIDIA/garak` (`probes.badchars`) |
+| DAN/AutoDAN/DanInTheWild, DevMode v2, ChatML-Tokens | `NVIDIA/garak` (`probes.dan`, `probes.chatml`) |
 
 ---
 
@@ -40,11 +58,17 @@ sofort auf alle Scanner aus.
 ## 3. Installation
 
 ```bash
-# Tesseract-OCR + Sprachpakete
+# Tesseract-OCR + Sprachpakete (nur für Scanner 2 / OCR)
 sudo apt update
 sudo apt install tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng -y
 
-# Python-Bibliotheken (einmal)
+# Python-Bibliotheken – Variante A: uv (empfohlen)
+uv pip install -r requirements.txt --system
+#   (eigene Umgebung statt System: uv venv && source .venv/bin/activate
+#    && uv pip install -r requirements.txt)
+
+# Python-Bibliotheken – Variante B: pip + venv
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -198,8 +222,13 @@ Schwellen. Eine Änderung wirkt sich auf alle drei gleichzeitig aus.
 python3 -m pytest test_scanner_suite.py -v
 ```
 
-13 Tests:
+33 Tests:
 - PDF: weißer Text, Mikroschrift, Metadaten-Injektion, `javascript:`-Link,
   Shared-DB-Konsistenz, sauberes Dokument, Luminanz-Logik
 - DOCX/TXT/MD: TXT-Injektion, MD-Frontmatter, MD-Negativ, DOCX-Text-Injektion,
   DOCX Weißer Text, DOCX `w:vanish`
+- Neue Signatur-/Evasions-Klassen: PromptInject (`nevermind` /
+  `STOP EVERYTHING` / `spell-check`-Leak), Goodside, GCG-Suffix,
+  Encoding/Obfuscation, URL-geführte Indirekt-Injection,
+  Chat-Template-Tokens (Llama/ChatML), Zero-Width- & Bidi-Overrides,
+  lange Encoded-Läufe – inkl. Negativ-Test einer sauberen Base64-Doku

@@ -20,13 +20,17 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Python-Interpreter auflösen: venv bevorzugen, sonst System-python3.
-# venv/bin/python nutzt pyvenv.cfg und findet fitz/Pillow/pytest; System-python3
-# hat die Abhängigkeiten in dieser Umgebung nicht.
+# Python-Interpreter auflösen:
+#   1. explizit gesetztes PYTHON (Umgebungsvariable)
+#   2. venv  (pip-Style)
+#   3. .venv (uv-Standard)
+#   4. System-python3 (Fallback)
 PYTHON="${PYTHON:-}"
 if [ -z "$PYTHON" ]; then
     if [ -x "$SCRIPT_DIR/venv/bin/python" ]; then
         PYTHON="$SCRIPT_DIR/venv/bin/python"
+    elif [ -x "$SCRIPT_DIR/.venv/bin/python" ]; then
+        PYTHON="$SCRIPT_DIR/.venv/bin/python"
     elif command -v python3 >/dev/null 2>&1; then
         PYTHON="python3"
     fi
@@ -109,6 +113,29 @@ run_one() {
             rc=$?
             ;;
     esac
+    # Sauberung: Bibliotheken (z. B. fitz-Deprecation-Warnung) können Zeilen
+    # vor/daneben das JSON in stdout schreiben; der Report bleibt damit
+    # maschinenlesbar. Letzter gültiger JSON-Block wird beibehalten.
+    $PYTHON - "$jsonfile" <<'PYEOF2' >/dev/null 2>&1
+import json, sys
+p = sys.argv[1]
+try:
+    t = open(p, encoding="utf-8", errors="replace").read()
+except Exception:
+    sys.exit(0)
+dec = json.JSONDecoder()
+out = None
+for i, ch in enumerate(t):
+    if ch not in "[{":
+        continue
+    try:
+        obj, j = dec.raw_decode(t, i)
+        out = t[i:j]
+    except json.JSONDecodeError:
+        continue
+if out is not None and out != t:
+    open(p, "w", encoding="utf-8").write(out + "\n")
+PYEOF2
     # Fehler-Fall: Scanner lief nicht sauber DURCH.
     if [ ! -s "$jsonfile" ] || ! $PYTHON -c "import json,sys; json.load(open(sys.argv[1]))" "$jsonfile" >/dev/null 2>&1; then
         # Wenn ein Parser-Fehler oder ein fehlgeschlagener Launch vorlag: 2 zurück.

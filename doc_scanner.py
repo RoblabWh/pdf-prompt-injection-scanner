@@ -19,7 +19,7 @@ import sys
 import zipfile
 import xml.etree.ElementTree as ET
 
-from pdfscan_core import find_matches_with_positions
+from pdfscan_core import find_matches_with_positions, find_text_anomalies, language_finding
 
 SEVERITY_LABELS = {"high": "KRITISCH", "medium": "WARNUNG", "low": "HINWEIS"}
 
@@ -49,6 +49,16 @@ def _scan_text_field(text, page, finding_type, findings):
         findings.append(_finding(
             page, finding_type, "high", text,
             f"Muster ({label}): …{snippet}…"))
+    # Strukturanomalien: unsichtbare Zeichen, Bidi-Overrides,
+    # Steuerzeichen, lange Encoded-Läufe (Evasions-Techniken).
+    for a in find_text_anomalies(text):
+        findings.append(_finding(
+            page, "Text-Anomalie", a["severity"], a["snippet"], a["description"]))
+    # Sprach-Kontextsignal: unerwartete Sprache (non-EN/DE) -> Warnung.
+    lang = language_finding(text)
+    if lang:
+        findings.append(_finding(
+            page, "Sprach-Kontext", lang["severity"], text[:400], lang["description"]))
 
 
 # ── TXT / MD ───────────────────────────────────────────────────────────────────
@@ -131,9 +141,13 @@ def _scan_docx(path, verbose):
         if re.match(r"word/header\d*\.xml$", name) or re.match(r"word/footer\d*\.xml$", name):
             _scan_docx_part(zf.read(name), 0, "Header/Footer-Prompt", findings, out)
 
-    # 3. Kommentare
+    # 3. Kommentare + Fuß-/Endnoten
     if "word/comments.xml" in names:
         _scan_docx_part(zf.read("word/comments.xml"), 0, "Kommentar-Prompt", findings, out)
+    for name, ftype in (("word/footnotes.xml", "Fußnote-Prompt"),
+                        ("word/endnotes.xml", "Endnote-Prompt")):
+        if name in names:
+            _scan_docx_part(zf.read(name), 0, ftype, findings, out)
 
     # 4. Kern-/App-Metadaten
     for name, ftype in (("docProps/core.xml", "Metadaten-Prompt"),

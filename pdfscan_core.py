@@ -77,6 +77,176 @@ def is_light_rgb_triple(rgb, threshold: int = LIGHT_TEXT_LUMINANCE) -> bool:
     return lum01 * 255 >= threshold
 
 
+# ── Strukturanomalien: Versteck-/Evasions-Techniken (ohne Regex) ───────
+# Techniken, die Signatur-Matches umgehen: unsichtbare Zeichen
+# (cf. garak probes.badchars), Bidirectional-Overrides (Bidi-Attacken),
+# Steuerzeichen und sehr lange Base64/Hex-artige Token-Läufe
+# (cf. garak probes.encoding, OWASP LLM01-Invisible-Content).
+INVISIBLE_CHAR_NAMES = {
+    0x200B: "Zero-Width Space",
+    0x200C: "Zero-Width Non-Joiner",
+    0x200D: "Zero-Width Joiner",
+    0x2060: "Word Joiner",
+    0xFEFF: "BOM / Zero-Width No-Break Space",
+    0x00AD: "Soft Hyphen",
+    0x180E: "Mongolian Vowel Separator",
+    0x034F: "Combining Grapheme Joiner",
+    0x200E: "Left-to-Right Mark",
+    0x200F: "Right-to-Left Mark",
+}
+BIDI_OVERRIDE_CHARS = {0x202A, 0x202B, 0x202C, 0x202D, 0x202E}
+
+# ── Sprach-Kontextsignal ──────────────────────────────────────────────────────
+# Injizierte Anweisungen stehen i. d. R. auf Englisch (LLM-"Lingua franca")
+# ODER in der Sprache des Dokuments (hier: Deutsch). Text in einer Unerwarteten
+# Sprache (FR, AR, ZH, …) ist ein Hinweis auf versteckten Fremdttext – und in
+# Kombination mit weißer/zu kleiner Schrift im selben Span ein starkes Zeichen
+# aktiver Versteckung (deshalb Eskalation auf "high").
+EXPECTED_LANGS = {"en", "de"}
+MIN_LANG_TEXT_CHARS = 20    # isolierte Tokens / kurze Begriffe (z. B. "Projektstatus")
+                             # liefern bei langdetect unsinnige Ergebnisse (lt/et);
+                             # echte fremdsprachige Anweisungen sind immer Sätze.
+_LANG_NAMES = {
+    "en": "Englisch", "de": "Deutsch", "fr": "Französisch", "es": "Spanisch",
+    "it": "Italienisch", "pt": "Portugiesisch", "nl": "Niederländisch",
+    "ru": "Russisch", "zh-cn": "Chinesisch (Vereinfacht)",
+    "zh-tw": "Chinesisch (Traditionell)", "ja": "Japanisch", "ko": "Koreanisch",
+    "ar": "Arabisch", "tr": "Türkisch", "pl": "Polnisch", "sv": "Schwedisch",
+    "da": "Dänisch", "no": "Norwegisch", "fi": "Finnisch", "hu": "Ungarisch",
+    "ro": "Rumänisch", "cs": "Tschechisch", "el": "Griechisch",
+    "he": "Hebräisch", "th": "Thailändisch", "vi": "Vietnamesisch",
+    "id": "Indonesisch", "ms": "Malaiisch", "fa": "Persisch", "ur": "Urdu",
+    "hi": "Hindi", "bn": "Bengalisch", "ta": "Tamilisch", "sw": "Swahili",
+}
+
+
+def detect_langs(text):
+    """[(Code, Konfidenz)] der erkannten Sprachen, leere Liste bei
+    Nicht-Erkennung, zu kurzem Input oder fehlender liblangdetect."""
+    if len(text.strip()) < MIN_LANG_TEXT_CHARS:
+        return []
+    try:
+        from langdetect import detect_langs as _dl
+    except ImportError:
+        return []
+    try:
+        info = _dl(text)
+        items = [info] if isinstance(info, object) and not isinstance(info, (list, tuple)) else list(info)
+        out = []
+        for it in items:
+            try:
+                code = str(getattr(it, "lang") or getattr(it, "code") or it)
+            except Exception:
+                code = str(it)[:2]
+            try:
+                conf = float(getattr(it, "prob", 0.0) or 0.0)
+            except Exception:
+                conf = 0.0
+            # Nur bei klarer Erkennung vertrauen (langdetect rät gern).
+            if code and conf > 0.5:
+                out.append((code, conf))
+        return out
+    except Exception:
+        return []
+
+
+def unexpected_langs(text):
+    """Codes erkannter Sprachen, die nicht zu EN/DE gehören."""
+    return [c for c, _ in detect_langs(text) if c not in EXPECTED_LANGS]
+
+
+def lang_label(code):
+    return _LANG_NAMES.get(code, code)
+
+
+def language_finding(text, visual_note=""):
+    """
+    Sprach-Kontextsignal:
+      - unerwartete Sprache (nicht EN/DE)          -> medium
+      - PLUS weiße/zu kleine Schrift im selben Span -> high
+    """
+    codes = unexpected_langs(text)
+    if not codes:
+        return None
+    desc = " + ".join(lang_label(c) for c in codes)
+    if visual_note:
+        return {
+            "severity": "high",
+            "description": ("Ausländischer Text ({d}) in Verbindung mit {v} "
+                            "– starkes Versteckungs-Zeichen").format(d=desc, v=visual_note),
+        }
+    return {
+        "severity": "medium",
+        "description": ("Text in unerwarteter Sprache ({d}) "
+                        "– erwartete Dokument-Sprachen sind EN/DE").format(d=desc),
+    }
+
+
+def _visible_snippet(text, idx, context=25):
+    """Zeigt einen Text-Schnipsel mit gekennzeichneten unsichtbaren Zeichen."""
+    lo = max(0, idx - context)
+    hi = min(len(text), idx + context)
+    out = []
+    for ch in text[lo:hi]:
+        cp = ord(ch)
+        if cp in INVISIBLE_CHAR_NAMES:
+            out.append("[" + INVISIBLE_CHAR_NAMES[cp] + "]")
+        elif cp in BIDI_OVERRIDE_CHARS:
+            out.append("[BIDI U+%04X]" % cp)
+        elif cp < 32 and ch not in "\t\n\r":
+            out.append("[CTL U+%04X]" % cp)
+        else:
+            out.append(ch)
+    return "".join(out).strip()
+
+
+def find_text_anomalies(text):
+    """Erkennt Evasions-Techniken in einem Text (kein Regextreffer nötig).
+
+    Liefert eine Liste von Dicts mit den Schlüsseln:
+      type, severity ("high"/"medium"), description, snippet.
+    """
+    if not text:
+        return []
+    out = []
+    seen = set()
+
+    def add(severity, description, snippet):
+        key = (description, snippet)
+        if key in seen:
+            return
+        seen.add(key)
+        out.append({
+            "type": "Text-Anomalie",
+            "severity": severity,
+            "description": description,
+            "snippet": snippet,
+        })
+
+    for idx, ch in enumerate(text):
+        cp = ord(ch)
+        if cp in INVISIBLE_CHAR_NAMES:
+            add("high",
+                "Invisible Character (Evasions-Technik, cf. garak badchars) – "
+                + INVISIBLE_CHAR_NAMES[cp],
+                _visible_snippet(text, idx))
+        elif cp in BIDI_OVERRIDE_CHARS:
+            add("high",
+                "Bidirectional Override (visuelle Verschleierung von Code/URLs)",
+                _visible_snippet(text, idx))
+        elif cp < 32 and ch not in "\t\n\r":
+            add("medium",
+                "Verdächtiges Steuerzeichen",
+                _visible_snippet(text, idx))
+
+    m = re.search(r"[A-Za-z0-9+/=]{80,}", text)
+    if m:
+        add("medium",
+            "Sehr langer Base64/Hex-artiger Lauf (möglicherweise Encoded-Payload)",
+            text[max(0, m.start() - 10): m.start() + 60] + "…")
+    return out
+
+
 # ── Ergänzungsmuster als (regex, label)-Tupel ────────────────────────────────
 # (Ergänzen die CANONICAL-Strings aus prompt_patterns.py um fehlende Gruppen,
 #  vor allem Tag-Injektionen und Modell-spezifische Prüfungen.)

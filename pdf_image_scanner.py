@@ -16,7 +16,16 @@ except ImportError:
 
 from pdfscan_core import (
     find_matches_with_positions,
+    find_text_anomalies,
 )
+
+
+def _add_anomalies(text, page, img_index, finding_type, findings):
+    """Ergänzt die Fundeliste um strukturelle Anomalien (Invisible-Chars, Bidi, …)."""
+    for a in find_text_anomalies(text):
+        findings.append(_finding(
+            page, img_index, finding_type, a["severity"], a["snippet"],
+            a["description"] + " — Bild " + str(img_index)))
 
 SEVERITY_LABELS = {"high": "KRITISCH", "medium": "WARNUNG", "low": "HINWEIS"}
 
@@ -61,6 +70,7 @@ def scan_image_metadata(img_object, page_num, img_index, findings, out):
                         findings.append(_finding(
                             page_num, img_index, "Bild-EXIF", "high", data_str,
                             f"Injektion erkannt ({label}) — Feld: {tag}"))
+                    _add_anomalies(data_str, page_num, img_index, "Bild-EXIF", findings)
     except Exception as e:
         out(f"    [Metadaten] Fehler beim EXIF-Parsing: {e}")
 
@@ -74,10 +84,11 @@ def scan_image_metadata(img_object, page_num, img_index, findings, out):
                     out(f"      | {key}: {val_str[:60]}...")
                     for label, matched, s, e in find_matches_with_positions(val_str):
                         snippet = val_str[max(0, s - 30): min(len(val_str), e + 30)].strip()
-                        out(f"      [ALERT] KRITISCH: Injection in Bild-Info '{key}'! ({label})")
-                        findings.append(_finding(
-                            page_num, img_index, "Bild-XMP", "high", val_str,
-                            f"Injektion erkannt ({label}) — Block: {key}"))
+                    out(f"      [ALERT] KRITISCH: Injection in Bild-Info '{key}'! ({label})")
+                    findings.append(_finding(
+                        page_num, img_index, "Bild-XMP", "high", val_str,
+                        f"Injektion erkannt ({label}) — Block: {key}"))
+                    _add_anomalies(val_str, page_num, img_index, "Bild-XMP", findings)
     except Exception as e:
         out(f"    [Metadaten] Fehler beim XMP-Parsing: {e}")
 
@@ -149,6 +160,7 @@ def scan_pdf_images(pdf_path, verbose=True):
                         findings.append(_finding(
                             page_num + 1, img_index + 1, "Bild-OCR", "high", ocr_text,
                             f"Muster ({label}): …{snippet}…"))
+                    _add_anomalies(ocr_text, page_num + 1, img_index + 1, "Bild-OCR", findings)
                 else:
                     out("    [OCR] Kein visueller Text im Bild erkannt.")
             except Exception as e:
