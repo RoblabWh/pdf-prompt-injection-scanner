@@ -113,9 +113,12 @@ run_one() {
             rc=$?
             ;;
     esac
-    # Sauberung: Bibliotheken (z. B. fitz-Deprecation-Warnung) können Zeilen
-    # vor/daneben das JSON in stdout schreiben; der Report bleibt damit
-    # maschinenlesbar. Letzter gültiger JSON-Block wird beibehalten.
+    # Sauberung: Bibliotheken (z. B. fitz-Deprecation-Warnung) schreiben ihre
+    # Zeilen auf STDOUT und polluten das JSON. Wir extrahieren den auersten
+    # Report-Block. Prioritaet: (1) Objekt mit "findings"-Liste, (2) Liste von
+    # Dicts, (3) sonst der erst-geluftete Block. FRUEHER wurde der LETZTE Block
+    # behalten, was den Report auf ein einzelnes Finding kollabierte und die
+    # Funde im konsolidierten Report verlor.
     $PYTHON - "$jsonfile" <<'PYEOF2' >/dev/null 2>&1
 import json, sys
 p = sys.argv[1]
@@ -124,17 +127,28 @@ try:
 except Exception:
     sys.exit(0)
 dec = json.JSONDecoder()
-out = None
+def rank(o):
+    if isinstance(o, dict) and isinstance(o.get("findings"), list):
+        return 0
+    if isinstance(o, list) and o and all(isinstance(x, dict) for x in o):
+        return 1
+    return 2
+best_i, best_j = -1, -1
+best_rank = 99
 for i, ch in enumerate(t):
     if ch not in "[{":
         continue
     try:
         obj, j = dec.raw_decode(t, i)
-        out = t[i:j]
     except json.JSONDecodeError:
         continue
-if out is not None and out != t:
-    open(p, "w", encoding="utf-8").write(out + "\n")
+    r = rank(obj)
+    if r < best_rank:
+        best_rank, best_i, best_j = r, i, j
+    if r == 0:
+        break
+if best_i >= 0 and t[best_i:best_j] != t:
+    open(p, "w", encoding="utf-8").write(t[best_i:best_j] + "\n")
 PYEOF2
     # Fehler-Fall: Scanner lief nicht sauber DURCH.
     if [ ! -s "$jsonfile" ] || ! $PYTHON -c "import json,sys; json.load(open(sys.argv[1]))" "$jsonfile" >/dev/null 2>&1; then

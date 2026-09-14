@@ -18,7 +18,6 @@ scan_logs/
 AGENTS.md
 readme-prompt-check.md
 zustand.md
-lastchange.md
 *.log
 *.tmp
 .temp/
