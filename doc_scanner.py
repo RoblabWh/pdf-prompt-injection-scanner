@@ -8,6 +8,7 @@ Deckung:
                 und Injektionsmuster in der Dokument-XML.
 
 Exit-Codes: 0 = sauber, 1 = kritisch (High), 2 = nur Auffälligkeit (Medium).
+HS
 """
 from __future__ import annotations
 
