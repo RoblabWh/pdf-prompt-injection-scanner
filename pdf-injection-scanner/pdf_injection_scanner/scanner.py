@@ -82,6 +82,7 @@ class Finding:
     content: str
     location: str = ""
     severity: str = "medium"
+    matched: str = ""
 
 
 def is_white_or_near_white(color, threshold=LIGHT_TEXT_LUMINANCE):
@@ -226,6 +227,7 @@ def scan_suspicious_patterns(full_text, page_num):
             description=label,
             content=f"...{context.strip()}...",
             severity="high",
+            matched=matched,
         ))
     return findings
 
@@ -382,6 +384,7 @@ def main(pdf_path: Path, output_json: bool, verbose: bool):
                 "description": f.description,
                 "content": f.content,
                 "severity": f.severity,
+                **({"matched": f.matched} if f.matched else {}),
             }
             for f in all_findings
         ]

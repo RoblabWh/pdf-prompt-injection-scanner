@@ -64,7 +64,7 @@ def _sev_rank(sev: str) -> int:
 
 def normalize(finding: Dict[str, Any], source: str) -> Dict[str, Any]:
     """Bringt ein Finding aller Scanner auf ein einheitliches Schema."""
-    return {
+    d = {
         "page": finding.get("page", 0),
         "type": finding.get("type", "unknown"),
         "description": finding.get("description", ""),
@@ -72,6 +72,10 @@ def normalize(finding: Dict[str, Any], source: str) -> Dict[str, Any]:
         "severity": (finding.get("severity") or "low").lower(),
         "source": source,
     }
+    matched = finding.get("matched")
+    if matched:
+        d["matched"] = matched
+    return d
 
 
 def merge(sources: Dict[str, str]) -> Dict[str, Any]:
@@ -132,9 +136,15 @@ def render_text(report: Dict[str, Any]) -> str:
         lines.append("-" * 60)
         for i, f in enumerate(report["findings"], 1):
             sev = f["severity"].upper()
-            lines.append(f"[{i:>3}] {sev:<7} | Seite {f['page']:<3} | {f['type']:<20} | {f['source']}")
+            lines.append(f"[{i:>3}] {sev:<7} | Seite {f['page']:<3} | {f['type']:<20} | Scanner: {f['source']}")
+            if f.get("description"):
+                lines.append(f"        Art des Fundes : {f['description'].strip()}")
+            if f.get("matched"):
+                m = (f["matched"] or "").strip().replace("\n", " ")
+                lines.append(f"        Gefunden im PDF: \"{m}\"")
             preview = (f["content"] or "").strip().replace("\n", " ")
-            lines.append(f"        {preview[:100]}{'...' if len(preview) > 100 else ''}")
+            lines.append(f"        Kontext        : \"{preview[:300]}{'...' if len(preview) > 300 else ''}\"")
+            lines.append("")
     if report.get("errors"):
         lines.append("-" * 60)
         lines.append("Lese-Fehler bei Quellen:")

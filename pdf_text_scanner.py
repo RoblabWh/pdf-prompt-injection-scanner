@@ -25,14 +25,17 @@ EXFIL_LINK_RE = re.compile(
 )
 
 
-def _finding(page, finding_type, severity, content, description):
-    return {
+def _finding(page, finding_type, severity, content, description, matched=None):
+    d = {
         "page": page,
         "type": finding_type,
         "description": description,
         "content": content,
         "severity": severity,
     }
+    if matched:
+        d["matched"] = matched
+    return d
 
 
 def _scan_field(value, page, finding_type, findings):
@@ -46,7 +49,7 @@ def _scan_field(value, page, finding_type, findings):
         snippet = value[max(0, s - 30): min(len(value), e + 30)].strip()
         findings.append(_finding(
             page, finding_type, "high", value,
-            f"Muster ({label}): …{snippet}…"))
+            f"Muster ({label}): …{snippet}…", matched=matched))
     for a in find_text_anomalies(value):
         findings.append(_finding(
             page, finding_type, a["severity"], a["snippet"], a["description"]))
@@ -250,7 +253,7 @@ def scan_text_and_metadata(pdf_path, verbose=True):
                         snippet = text[max(0, s - 30): min(len(text), e + 30)].strip()
                         findings.append(_finding(
                             page_num + 1, "Textlayer-Prompt", "high", text,
-                            f"Muster ({label}): …{snippet}…"))
+                            f"Muster ({label}): …{snippet}…", matched=matched))
 
                     # Strukturanomalien (unsichtbare Zeichen, Bidi, …)
                     for a in find_text_anomalies(text):
@@ -278,7 +281,7 @@ def scan_text_and_metadata(pdf_path, verbose=True):
                 snippet = page_text[max(0, s - 30): min(len(page_text), e + 30)].strip()
                 findings.append(_finding(
                     page_num + 1, "Textlayer-Prompt", "high", page_text[:400],
-                    f"Muster ({label}): …{snippet}… (Multi-Span)"))
+                    f"Muster ({label}): …{snippet}… (Multi-Span)", matched=matched))
 
     # Deduplizierung (gleiche Seite + Typ + Inhalt)
     dedup = []
@@ -301,7 +304,9 @@ def scan_text_and_metadata(pdf_path, verbose=True):
     for idx, f in enumerate(findings, 1):
         out(f"[{idx}] {SEVERITY_LABELS[f['severity']]} | {f['type']} (Seite {f['page']}) | "
             f"{f['description']}")
-        out(f"    Inhalt: \"{f['content']}\"")
+        if f.get("matched"):
+            out(f"    Gefundener Text: \"{f['matched']}\"")
+        out(f"    Kontext: \"{f['content']}\"")
         out()
 
     if any(f["severity"] == "high" for f in findings):

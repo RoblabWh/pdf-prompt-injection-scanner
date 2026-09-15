@@ -27,14 +27,17 @@ SEVERITY_LABELS = {"high": "KRITISCH", "medium": "WARNUNG", "low": "HINWEIS"}
 W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
 
-def _finding(page, finding_type, severity, content, description):
-    return {
+def _finding(page, finding_type, severity, content, description, matched=None):
+    d = {
         "page": page,
         "type": finding_type,
         "description": description,
         "content": content,
         "severity": severity,
     }
+    if matched:
+        d["matched"] = matched
+    return d
 
 
 def _scan_text_field(text, page, finding_type, findings):
@@ -48,7 +51,7 @@ def _scan_text_field(text, page, finding_type, findings):
         snippet = text[max(0, s - 30): min(len(text), e + 30)].strip()
         findings.append(_finding(
             page, finding_type, "high", text,
-            f"Muster ({label}): …{snippet}…"))
+            f"Muster ({label}): …{snippet}…", matched=matched))
     # Strukturanomalien: unsichtbare Zeichen, Bidi-Overrides,
     # Steuerzeichen, lange Encoded-Läufe (Evasions-Techniken).
     for a in find_text_anomalies(text):
@@ -302,7 +305,9 @@ def _summarize(findings, out):
     for idx, f in enumerate(findings, 1):
         out(f"[{idx}] {SEVERITY_LABELS[f['severity']]} | {f['type']} (Seite {f['page']}) | "
             f"{f['description']}")
-        out(f"    Inhalt: \"{f['content']}\"")
+        if f.get("matched"):
+            out(f"    Gefundener Text: \"{f['matched']}\"")
+        out(f"    Kontext: \"{f['content']}\"")
         out()
 
     if any(f["severity"] == "high" for f in findings):

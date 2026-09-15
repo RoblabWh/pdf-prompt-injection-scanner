@@ -106,7 +106,7 @@ andere Wert ist Alarm.
 ./run_pdf_scanner.sh --only injection <pdf>    # nur Tiefenscan (Scanner 3)
 ./run_pdf_scanner.sh --only doc <datei>        # nur Textdokumenten (Scanner 4)
 ./run_pdf_scanner.sh --batch <ordner>          # alle *.pdf + *.docx + *.txt + *.md
-./run_pdf_scanner.sh --format text <datei>     # Text- statt JSON-Report
+./run_pdf_scanner.sh --format json <datei>     # JSON- statt Text-Report (Text ist Standard)
 ./run_pdf_scanner.sh -h                        # Hilfe
 ```
 

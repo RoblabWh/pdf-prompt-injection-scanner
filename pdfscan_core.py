@@ -252,14 +252,14 @@ def find_text_anomalies(text):
 #  vor allem Tag-Injektionen und Modell-spezifische Prüfungen.)
 SUPPLEMENTARY_PATTERNS: List[Tuple[str, str]] = [
     # Tag-Injektionen (System-/Instrektions-Tags)
-    (r"(?i)^\s*<\s*system\s*>", "System tag injection"),
-    (r"(?i)\[INST\]", "Instruction tag injection"),
-    (r"(?i)###\s*(system|instruction|human|assistant)", "Role tag injection"),
+    (r"(?i)^\s*<\s*system\s*>", "System-Tag-Injektion"),
+    (r"(?i)\[INST\]", "Instruktions-Tag-Injektion"),
+    (r"(?i)###\s*(system|instruction|human|assistant)", "Rollen-Tag-Injektion"),
     # Modell-spezifische Identitätsprüfung
-    (r"(?i)if\s+you\s+are\s+(a\s+)?(gpt|gpt-4|claude|gemini|copilot|llama|chatgpt)", "Model-specific check"),
-    (r"(?i)you\s+are\s+(a\s+)?(gpt|claude|gemini|llama|copilot)", "AI identity assertion"),
+    (r"(?i)if\s+you\s+are\s+(a\s+)?(gpt|gpt-4|claude|gemini|copilot|llama|chatgpt)", "Modell-Identitätsprüfung"),
+    (r"(?i)you\s+are\s+(a\s+)?(gpt|claude|gemini|llama|copilot)", "KI-Identitätsbehauptung"),
     # Exfiltration an konkrete Ziele (EN)
-    (r"(?i)(?:send|forward|exfiltrate|transmit|upload|post|leak)\s+(?:the|any|all|my|your)\s+(?:data|secret|token|api|key|password|credential|cookie|session)\s+to\s+(?:https?|ftp|webhook|endpoint|url)\s*\S", "Data exfiltration (URL)"),
+    (r"(?i)(?:send|forward|exfiltrate|transmit|upload|post|leak)\s+(?:the|any|all|my|your)\s+(?:data|secret|token|api|key|password|credential|cookie|session)\s+to\s+(?:https?|ftp|webhook|endpoint|url)\s*\S", "Daten-Exfiltration (URL)"),
     # ZH – AI身份 / 系统提示 (erweitert)
     (r"如果你是.{0,4}(AI|人工智能|语言模型|大模型|机器人|助手)", "AI身份检测"),
     (r"(?:输出|显示|告诉我|泄露|打印|展示|给出|列出).{0,6}(?:系统提示|系统指令|system\s*prompt|初始提示|隐藏指令)", "系统提示泄露"),
@@ -297,7 +297,7 @@ def _build_patterns() -> List[Pattern]:
     # CANONICAL-Muster (einfache Strings) – generisches Label.
     for pat in PROMPT_PATTERNS:
         try:
-            compiled.append(Pattern(regex=re.compile(pat), label="Injection pattern"))
+            compiled.append(Pattern(regex=re.compile(pat), label="Injektionsmuster"))
         except re.error:
             # Ein ungültiges Muster darf den Gesamts Scan nicht abbrechen.
             continue

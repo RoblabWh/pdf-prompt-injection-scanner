@@ -82,3 +82,30 @@
 ## ANLEITUNG.md  (+37)
 - Erkannte Techniken + Quellen-Tabellen aktualisiert
 - **Installation**: `uv` als Variante A, `pip` als Variante B
+
+# Änderungen (2026-09-14) — Detail-Report pro Fund
+
+## merge_reports.py
+- `normalize()`: neues optionales Feld `matched` (= exakt im Dokument
+  gefundener Text, z. B. der injizierte Prompt-Ausschnitt)
+- `render_text()`: pro Fund werden jetzt 3 Zeilen ausgegeben:
+  „Art des Fundes" (description), „Gefunden im PDF" (matched),
+  „Kontext" (content) – statt nur einer vagen Vorschau
+
+## Alle 4 Scanner (pdf_text_scanner, pdf_image_scanner,
+pdf_injection_scanner.scanner, doc_scanner)
+- `_finding()` / `Finding`-Dataclass: neues `matched`-Feld, gefüllt mit dem
+  Regex-Treffer (`find_matches_with_positions`)
+- Verbose-Ausgabe: Zeile „Gefundener Text" zusätzlich zu „Kontext"
+
+## pdfscan_core.py
+- Ergänzungsmuster-Labels übersetzt (z. B. „System-Tag-Injektion",
+  „Injektionsmuster") – CANONICAL-Muster bekommen neutrales Label
+  „Injektionsmuster" statt des rohen Regex-Texts
+
+## run_pdf_scanner.sh / README.md / ANLEITUNG.md
+- Default-Report ist jetzt der detailreiche **Text-Report** statt JSON;
+  `--format json` / `--report-json` für Maschinenlesbarkeit
+
+Verifikation: 40/40 Tests grün; test_injected.pdf → Exit 1,
+test_txt3_clean.txt → Exit 0 (unverändert).

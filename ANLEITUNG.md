@@ -97,7 +97,7 @@ Optionen:
 
 ./run_pdf_scanner.sh --batch <ordner>              # *.pdf + *.docx + *.txt + *.md
 
-./run_pdf_scanner.sh --format text Datei.pdf       # Text- statt JSON-Report
+./run_pdf_scanner.sh --format json Datei.pdf       # JSON- statt Text-Report (Text = Standard)
 ./run_pdf_scanner.sh --report-json Datei.pdf       # erzwinge JSON-Report
 ```
 
@@ -124,7 +124,8 @@ PYTHONPATH=pdf-injection-scanner python3 -m pdf_injection_scanner.scanner --json
 ### 4.4 Konsolidierter Report (alle 3 Scanner)
 
 ```bash
-# Laeuft automatisch, wenn --report-json oder --format json gesetzt ist:
+# Text-Report ist Standard; JSON-Report zwingen mit --report-json oder --format json:
+./run_pdf_scanner.sh Pfad/zur/Datei.pdf
 ./run_pdf_scanner.sh --report-json Pfad/zur/Datei.pdf
 ```
 

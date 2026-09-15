@@ -30,14 +30,17 @@ def _add_anomalies(text, page, img_index, finding_type, findings):
 SEVERITY_LABELS = {"high": "KRITISCH", "medium": "WARNUNG", "low": "HINWEIS"}
 
 
-def _finding(page, img_index, finding_type, severity, content, description):
-    return {
+def _finding(page, img_index, finding_type, severity, content, description, matched=None):
+    d = {
         "page": page,
         "type": finding_type,
         "description": f"{description} — Bild {img_index}",
         "content": content,
         "severity": severity,
     }
+    if matched:
+        d["matched"] = matched
+    return d
 
 
 def _available_ocr_langs():
@@ -69,7 +72,7 @@ def scan_image_metadata(img_object, page_num, img_index, findings, out):
                         out(f"      [ALERT] KRITISCH: Injection in EXIF '{tag}'! ({label})")
                         findings.append(_finding(
                             page_num, img_index, "Bild-EXIF", "high", data_str,
-                            f"Injektion erkannt ({label}) — Feld: {tag}"))
+                            f"Injektion erkannt ({label}) — Feld: {tag}", matched=matched))
                     _add_anomalies(data_str, page_num, img_index, "Bild-EXIF", findings)
     except Exception as e:
         out(f"    [Metadaten] Fehler beim EXIF-Parsing: {e}")
@@ -87,7 +90,7 @@ def scan_image_metadata(img_object, page_num, img_index, findings, out):
                     out(f"      [ALERT] KRITISCH: Injection in Bild-Info '{key}'! ({label})")
                     findings.append(_finding(
                         page_num, img_index, "Bild-XMP", "high", val_str,
-                        f"Injektion erkannt ({label}) — Block: {key}"))
+                        f"Injektion erkannt ({label}) — Block: {key}", matched=matched))
                     _add_anomalies(val_str, page_num, img_index, "Bild-XMP", findings)
     except Exception as e:
         out(f"    [Metadaten] Fehler beim XMP-Parsing: {e}")
@@ -159,7 +162,7 @@ def scan_pdf_images(pdf_path, verbose=True):
                         out(f"      [ALERT] KRITISCH: Injection im Bildtext! ({label})")
                         findings.append(_finding(
                             page_num + 1, img_index + 1, "Bild-OCR", "high", ocr_text,
-                            f"Muster ({label}): …{snippet}…"))
+                            f"Muster ({label}): …{snippet}…", matched=matched))
                     _add_anomalies(ocr_text, page_num + 1, img_index + 1, "Bild-OCR", findings)
                 else:
                     out("    [OCR] Kein visueller Text im Bild erkannt.")
@@ -195,7 +198,9 @@ def scan_pdf_images(pdf_path, verbose=True):
     for idx, f in enumerate(findings, 1):
         out(f"[{idx}] {SEVERITY_LABELS[f['severity']]} | {f['type']} (Seite {f['page']}) | "
             f"{f['description']}")
-        out(f"    Inhalt: \"{f['content'][:200].strip()}\"")
+        if f.get("matched"):
+            out(f"    Gefundener Text: \"{f['matched']}\"")
+        out(f"    Kontext: \"{f['content'][:200].strip()}\"")
         out()
 
     return findings, 1

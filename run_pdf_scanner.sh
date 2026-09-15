@@ -6,7 +6,8 @@
 #    ./run_pdf_scanner.sh <datei>                   # passende Scanner (empfohlen)
 #    ./run_pdf_scanner.sh --only text|image|injection|doc <datei>
 #    ./run_pdf_scanner.sh --batch <ordner>          # *.pdf + *.docx + *.txt + *.md
-#    ./run_pdf_scanner.sh --format text <datei>     # Text- statt JSON-Report
+#    ./run_pdf_scanner.sh --format text <datei>     # Text-Report (Default)
+#    ./run_pdf_scanner.sh --format json <datei>     # JSON- statt Text-Report
 #    ./run_pdf_scanner.sh --report-json <datei>     # erzwinge JSON-Report
 #
 #  Dateitypen:
@@ -41,7 +42,7 @@ fi
 
 ONLY="all"
 BATCH=""
-FORMAT="json"
+FORMAT="text"
 REPORT_JSON=0
 
 # ── Argumente parsen ────────────────────────────────────────────────────────
@@ -252,14 +253,14 @@ scan_file() {
     [[ "${ran[*]:-}" == *doc* ]]       && [ -s "$dco" ] && src_args+=("--doc" "$dco")
 
     if [ ${#src_args[@]} -gt 0 ]; then
-        if [ "$FORMAT" = "json" ] || [ "$REPORT_JSON" -eq 1 ]; then
+        if [ "$REPORT_JSON" -eq 1 ]; then
             echo
             echo "  --- Report (JSON) ---"
             $PYTHON merge_reports.py "${src_args[@]}" --format json
             echo
         else
             echo
-            echo "  --- Report ---"
+            echo "  --- Report (Text, Detailansicht) ---"
             $PYTHON merge_reports.py "${src_args[@]}" --format text
             echo
         fi
